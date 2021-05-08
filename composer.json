@@ -11,5 +11,10 @@
             "name": "Dimitri Degroise",
             "email": "68024482+DimitriAFC@users.noreply.github.com"
         }
-    ]
+    ],
+    "autoload": {
+        "psr-4": {
+            "Kikbook\\": "./"
+        }
+}
 }
