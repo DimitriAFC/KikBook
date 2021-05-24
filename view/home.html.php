@@ -26,8 +26,8 @@
                     <a href="<?= $path ?>/forget" class="mot-de-passe-oublier">Mot de passe oublié ?</a>
                     <button type="submit" class="btn btn-primary btn-connecter-accueil">Se connecter</button>
                 </form>
-                <button class="btn btn-primary btn-inscription-accueil"><a href="<?= $path ?>/register"
-                        class="btn-inscription">S'inscrire</a></button>
+                <a href="<?= $path ?>/register"class="btn-inscription">
+                <button class="btn btn-primary btn-inscription-accueil">S'inscrire</button></a>
             </div>
             <div class="col-md-4">
             </div>

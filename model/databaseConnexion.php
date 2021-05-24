@@ -9,7 +9,7 @@ class databaseConnexion
 {
     private static $host = "localhost";
     private static $port = "3306";
-    private static $database = "Kikbook";
+    private static $database = "kikbook";
     private static $charset = "UTF8";
     private static $user = "root";
     private static $password = "";
@@ -31,7 +31,7 @@ class databaseConnexion
 
             View::setTemplate("fatal_error");
 
-            View::bindVariable("title", "applicovid");
+            View::bindVariable("title", "Kikbook");
             View::bindVariable("code", $code);
             View::bindVariable("debugMode", false);
             View::bindVariable("ex", $ex);

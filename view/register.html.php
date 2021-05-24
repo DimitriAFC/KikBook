@@ -3,16 +3,16 @@
 <?php require "head.html.php" ?>
 
 <body>
-    <div class="container-fluid" >
+    <div class="container-fluid">
         <div class="row">
             <div class="col-md-4">
             </div>
             <div class="col-md-4">
                 <img src="public/images/kikbook-logo.png" class="rounded mx-auto d-block logo-accueil"
                     alt="kikbook-logo">
-                    <button class="btn btn-primary btn-retour-accueil"><a href="<?= $path ?>/"
-                        class="btn-inscription">Acceuil</a></button>
-                <form action="" method="POST" class="formulaire_connection">
+                <a href="<?= $path ?>/" class="btn-inscription">
+                    <button class="btn btn-primary btn-retour-accueil">Acceuil</button></a>
+                <form action="<?= $path ?>/registerBDD" method="POST" class="formulaire_connection">
                     <div class="form-group">
                         <label for="nom">Votre Nom</label>
                         <input type="text" class="form-control" id="nom" placeholder="Votre Nom" name="nom">
@@ -32,9 +32,9 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="date-naissance">Date de Naissance</label>
-                        <input class="form-control" type="date" value="2000-08-19" id="date-naissance"
-                            name="date-naissance">
+                        <label for="date_naissance">Date de Naissance</label>
+                        <input class="form-control" type="date" value="2000-08-19" id="date_naissance"
+                            name="date_naissance">
                     </div>
                     <div class="form-group">
                         <label for="genre">Vous êtes</label>
