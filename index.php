@@ -9,8 +9,7 @@ session_start();
 
 $router = new Router();
 $router->addRoute(new Route("/","HomeController"));
-$router->addRoute(new Route("/register", "UserController", "register"));
-$router->addRoute(new Route("/registerBDD", "UserController"));
+$router->addRoute(new Route("/register", "UserController", "inscription"));
 
 
 $route = $router->findRoute();

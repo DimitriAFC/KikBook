@@ -13,8 +13,8 @@ class UserController
     public static function route()
     {
         $router = new Router();
-        $router->addRoute(new Route("/register", "UserController", "register"));
-        $router->addRoute(new Route("/registerBDD", "UserController", "inscription"));
+        $router->addRoute(new Route("/register", "UserController", "inscription"));
+        // $router->addRoute(new Route("/registerBDD", "UserController", "inscription"));
 
         $route = $router->findRoute();
         if ($route) {
@@ -24,14 +24,13 @@ class UserController
         }
     }
 
-    public static function register()
-    {
-        View::setTemplate('register');
-        View::display();
-    }
-
     public static function inscription()
     {
+
+        View::setTemplate('register');
+        View::display();
+        $erreurs = [];
+        if(!empty($_POST['nom'])){
         $user = new User;
         $user->nom = $_POST['nom'];
         $user->prenom = $_POST['prenom'];
@@ -47,6 +46,9 @@ class UserController
         $router = new Router();
         $path =  $router->getBasePath();
         header("location: {$path}/");
+    } else {
+        $erreurs['nom'] = "Nom";
+    }
     }
    
 }

@@ -66,6 +66,7 @@
 label {
     margin-bottom:10px;
     margin-top:10px;
+    color:#000000;
 }
 
 /* Lien mot de passe oublier accueil */
@@ -92,4 +93,12 @@ label {
     width: 100%;
     background-color: #d31ada;
     border:1px solid #d31ada;
+}
+
+/* Formulaire page d'accueil */
+.formulaire_connection {
+    background-color: #f4f4f4;
+    padding:10px 10px;
+    margin-bottom:10px;
+    border-radius:3px;
 }

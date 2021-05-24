@@ -23,7 +23,9 @@
                         <input type="password" class="form-control" id="password" placeholder="Mot de passe"
                             name="password">
                     </div>
+                    <div class="text-center" style="margin-top:10px;">
                     <a href="<?= $path ?>/forget" class="mot-de-passe-oublier">Mot de passe oublié ?</a>
+                    </div>
                     <button type="submit" class="btn btn-primary btn-connecter-accueil">Se connecter</button>
                 </form>
                 <a href="<?= $path ?>/register"class="btn-inscription">

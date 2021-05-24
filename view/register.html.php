@@ -10,9 +10,10 @@
             <div class="col-md-4">
                 <img src="public/images/kikbook-logo.png" class="rounded mx-auto d-block logo-accueil"
                     alt="kikbook-logo">
+                    
                 <a href="<?= $path ?>/" class="btn-inscription">
                     <button class="btn btn-primary btn-retour-accueil">Acceuil</button></a>
-                <form action="<?= $path ?>/registerBDD" method="POST" class="formulaire_connection">
+                <form action="<?= $path ?>/register" method="POST" class="formulaire_inscription">
                     <div class="form-group">
                         <label for="nom">Votre Nom</label>
                         <input type="text" class="form-control" id="nom" placeholder="Votre Nom" name="nom">
@@ -39,8 +40,8 @@
                     <div class="form-group">
                         <label for="genre">Vous êtes</label>
                         <select class="form-control" id="genre" name="genre">
-                            <option>Un homme</option>
-                            <option>Une femme</option>
+                            <option>Homme</option>
+                            <option>Femme</option>
                         </select>
                     </div>
                     <button type="submit" class="btn btn-primary btn-inscrire">S'inscrire</button>
