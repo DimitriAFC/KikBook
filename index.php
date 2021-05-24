@@ -9,6 +9,7 @@ session_start();
 
 $router = new Router();
 $router->addRoute(new Route("/","HomeController"));
+$router->addRoute(new Route("/register", "UserController", "register"));
 
 
 $route = $router->findRoute();
