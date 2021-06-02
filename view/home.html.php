@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<?php require "head.html.php" ?>
-
+    <?php require "head.html.php" ?>
 <body>
     <div class="container-fluid" style="margin-top:30px;">
         <div class="row">
@@ -13,7 +12,7 @@
                     Retrouvez vos collègues de travail, partagez et discuter autour d'un bon café.</p>
                 <img src="public/images/kikbook-logo.png" class="rounded mx-auto d-block logo-accueil"
                     alt="kikbook-logo">
-                <form action="" method="POST" class="formulaire_connection">
+                <form action="<?= $path ?>/connexion" method="Post" class="formulaire_connection">
                     <div class="form-group">
                         <label for="email">E-mail</label>
                         <input type="email" class="form-control" id="email" placeholder="Adresse mail" name="email">

@@ -14,7 +14,10 @@ class UserController
     {
         $router = new Router();
         $router->addRoute(new Route("/register", "UserController", "inscription"));
-        // $router->addRoute(new Route("/registerBDD", "UserController", "inscription"));
+        $router->addRoute(new Route("/profil", "UserController", "profil"));
+        $router->addRoute(new Route("/off", "UserController", "off"));
+        $router->addRoute(new Route("/connexion", "UserController", "connexion"));
+
 
         $route = $router->findRoute();
         if ($route) {
@@ -24,13 +27,12 @@ class UserController
         }
     }
 
+    // Fonction inscription de l'utilisateur
     public static function inscription()
     {
-
         View::setTemplate('register');
         View::display();
-        $erreurs = [];
-        if(!empty($_POST['nom'])){
+        
         $user = new User;
         $user->nom = $_POST['nom'];
         $user->prenom = $_POST['prenom'];
@@ -46,9 +48,48 @@ class UserController
         $router = new Router();
         $path =  $router->getBasePath();
         header("location: {$path}/");
-    } else {
-        $erreurs['nom'] = "Nom";
+    
     }
+
+    // Fonction connexion de l'utilisateur
+     public static function connexion()
+    {
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+        $users = new User;
+
+        $user = $users->connexion($email, $password);
+
+        if ($user != null) {
+            $_SESSION['user'] = $user;
+            $router = new Router();
+            $path =  $router->getBasePath();
+            header("location: {$path}/profil");
+        } else {
+                unset($_SESSION['user']);
+                $router = new Router();
+                $path = $router->getBasePath();
+                header("location:{$path}/");
+            }
+        }
+
+    public static function profil()
+    {
+        View::setTemplate('profil');
+        View::display();
     }
-   
-}
+
+    // Fonction de déconnexion de l'utilisateur
+    public static function off()
+    {
+        unset($_SESSION['user']);
+
+        $router = new Router();
+        $path = $router->getBasePath();
+        header("location:{$path}/");
+    }
+
+    }
+
+
+

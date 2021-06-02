@@ -10,6 +10,10 @@ session_start();
 $router = new Router();
 $router->addRoute(new Route("/","HomeController"));
 $router->addRoute(new Route("/register", "UserController", "inscription"));
+$router->addRoute(new Route("/profil", "UserController"));
+$router->addRoute(new Route("/off", "UserController"));
+$router->addRoute(new Route("/connexion", "UserController", "connexion"));
+
 
 
 $route = $router->findRoute();

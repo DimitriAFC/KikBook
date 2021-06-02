@@ -2,8 +2,7 @@
     "name": "dimitri/kik-book",
     "type": "project",
     "require": {
-        "twbs/bootstrap": "^5.0",
-        "components/jquery": "^3.5"
+        "twbs/bootstrap-sass": "^3.4"
     },
     "license": "GPL 3.0",
     "authors": [
@@ -11,10 +10,5 @@
             "name": "Dimitri Degroise",
             "email": "68024482+DimitriAFC@users.noreply.github.com"
         }
-    ],
-    "autoload": {
-        "psr-4": {
-            "Kikbook\\": "./"
-        }
-}
+    ]
 }
