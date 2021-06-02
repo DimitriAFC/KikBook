@@ -30,7 +30,7 @@ class User {
         databaseConnexion::close();
     }
 
-    public static function connexion( string $email, string $password ){
+    public static function connexion(string $email, string $password){
         $dbh = databaseConnexion::open();
         $query = "SELECT * FROM `user` WHERE `email` = :email AND `password` = :password ";
         $sth = $dbh->prepare($query);
@@ -41,6 +41,32 @@ class User {
         $items = $sth->fetch();
         databaseConnexion::close();
         return $items;
+    }
+
+    public function updateProfil()
+    {
+        $dbh = databaseConnexion::open();
+        $query = "UPDATE `user` SET nom= :nom, prenom= :prenom, email= :email, date_naissance= :date_naissance, genre= :genre WHERE id_user = :id_user";
+        $sth = $dbh->prepare($query);
+        $sth->bindParam(":nom", $this->nom);
+        $sth->bindParam(":prenom", $this->prenom);
+        $sth->bindParam(":email", $this->email);
+        $sth->bindParam(":date_naissance", $this->date_naissance);
+        $sth->bindParam(":genre", $this->genre);
+        $sth->bindParam(":id_user", $this->id_user);
+        $sth->execute();
+        databaseConnexion::Close();  
+    }
+
+    public function updatePassword()
+    {
+        $dbh = databaseConnexion::open();
+        $query = "UPDATE `user` SET password= :password WHERE id_user = :id_user";
+        $sth = $dbh->prepare($query);
+        $sth->bindParam(":password", $this->password);
+        $sth->bindParam(":id_user", $this->id_user);
+        $sth->execute();
+        databaseConnexion::Close();  
     }
 
 }
