@@ -2,8 +2,8 @@
 namespace Kikbook\model;
 
 use Kikbook\View;
-use \PDO;
-use \PDOException;
+use PDO;
+use PDOException;
 
 class databaseConnexion
 {

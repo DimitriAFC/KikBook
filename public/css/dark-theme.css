@@ -1,0 +1,213 @@
+/* White Theme */
+
+/* Tout */
+*{
+    font-family: Bai Jamjuree, Arial;
+}
+
+/* Body */
+body{
+    background-color:#070d17;
+    margin: auto;
+}
+
+/* Nom Kikbook */
+.nom-kik{
+    display:none !important;
+}
+
+/* Navigation Kikbook */
+.nav-mobile{
+    display: none;
+}
+
+/* Texte page accueil */
+.texte-accueil{
+    color:#b9b9b9;
+    font-size: 20px;
+
+}
+
+/* navbar de l'accueil */
+.navbar-accueil{
+    background: linear-gradient(to bottom right, #070d17, #0b1320);
+    box-shadow: 1px 1px 20px 1px rgb(6, 11, 20);
+}
+
+/* ??????????????? */
+.header-fond{
+    background-color: #f5f5f5;
+}
+
+/* footer */
+.footer-site{
+    background-image: linear-gradient( 20deg, #12d6df, #f70fff);
+    /* border-image: linear-gradient(90deg, #12d6df, #f70fff) 10; */
+    color:#fff;
+    font-size: 14px;
+    position: fixed;
+}
+
+/* footer liens */
+.footer-site a{
+    color:#fff;
+    font-size: 14px;
+    text-decoration: none;
+    padding:5px 5px;
+}
+
+/* Bouton inscrire page inscription */
+.btn-inscrire{
+    width:100%;
+    margin-top:20px;
+    margin-bottom: 10px;
+    background-color: #12d6df;
+    border:1px solid #12d6df;
+    margin-bottom:100px;
+}
+
+/* Bouton se connecter page d'accueil */
+.btn-connecter-accueil {
+    width:50%;
+    margin-top:20px;
+    margin-bottom: 10px;
+    background-color: #212c3d;
+    border:2px solid #12d6df;
+    color:#12d6df;
+}
+
+/* Bouton se connecter page d'accueil au survol */
+.btn-connecter-accueil:hover , .btn-inscrire:hover{
+    background-color: #0dafb8;
+    border:2px solid #12d6df;
+    color:#fff;
+}
+
+/* Bouton d'inscription */
+.btn-inscription-accueil {
+    width: 100%;
+    background-color: #070d17;
+    border:2px solid #f70fff;
+    color: #f70fff;
+    margin-bottom:100px;
+}
+
+/* Bouton d'inscription au survol */
+.btn-inscription-accueil:hover {
+    background-color: #d31ada;
+    border:2px solid #d31ada;
+    color: #fff;
+    margin-bottom:100px;
+    
+}
+
+/* Logo à l'accueil */
+.nom-accueil{
+    font-size: 50px;
+    font-weight: 600;
+    font-family: Arial;
+}
+
+.effet-degrade{
+    background: -webkit-linear-gradient(#0dafb8, #f70fff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Label du formulaire d'accueil */
+label {
+    margin-bottom:10px;
+    margin-top:10px;
+    color:#12d6df;
+}
+
+/* input du formulaire d'accueil */
+input{
+    background-color:#070d17 !important;
+    border:1px solid #070d17 !important;
+    color:#b9b9b9 !important;
+}
+
+/* Select du formulaire */
+select{
+    background-color:#070d17 !important;
+    border:1px solid #070d17 !important;
+    color:#b9b9b9 !important;
+}
+
+/* Lien mot de passe oublier accueil */
+.mot-de-passe-oublier{
+    text-decoration: none;
+    color:#12d6df;
+}
+
+/* Lien mot de passe oublier accueil au survol */
+.mot-de-passe-oublier:hover{
+    text-decoration: none;
+    color:#f70fff;
+}
+
+/* Bouton retour à l'accueil page inscription */
+.btn-retour-accueil{
+    background-color: #070d17;
+    border:1px solid #070d17;
+    margin-bottom:10px;
+}
+
+/* Bouton retour à l'accueil page inscription au survol */
+.btn-retour-accueil:hover{
+    background-color: #070d17;
+    border:1px solid #f70fff;
+    margin-bottom:10px;
+}
+
+/* Formulaire page d'accueil */
+.formulaire_connection {
+    background-color: #212c3d;
+    border: none;
+    padding:10px 10px;
+    margin-bottom:10px;
+    border-radius:3px;
+}
+
+
+
+
+/************************/
+/* Changement de format */
+/************************/
+@media (max-width: 992px) { 
+    /* Navigation ordinateur */
+    .nav-ordinateur{
+        display:none;
+    }
+
+    /* Navigation mobile */
+    .nav-mobile{
+        display: block;
+    }
+
+    /* Logo Kikbook */
+    .logo-kik{
+        display:none !important;
+    }
+
+    /* Nom kikbook mobile */
+    .nom-kik{
+        display: block !important;
+        height: 50px;
+        width: 150px;
+    }
+
+  
+ }
+
+ /************************/
+/* Changement de format */
+/************************/
+@media (max-width: 767px) { 
+    .image-presentation{
+        display: none !important;
+    }
+ }
+

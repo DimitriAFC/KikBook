@@ -3,7 +3,7 @@
 namespace Kikbook\model;
 
 use Kikbook\model\databaseConnexion;
-use \PDO;
+use PDO;
 
 class User {
     public $id_user;

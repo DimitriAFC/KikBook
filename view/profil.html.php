@@ -4,70 +4,80 @@
 
 <body>
     <?php require "navbar.html.php" ?>
+
+
+
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-12" style="margin-top:60px;">
-                <div class="alert alert-warning text-center" role="alert">
-                    Bonjour <?= $_SESSION['user']->prenom ?> <?= $_SESSION['user']->nom ?>
-                </div>
-                <div class="row">
-                    <div class="col-md-4" style="margin-top:60px;">
-                        <div class="list-group">
-                            <button type="button" class="list-group-item list-group-item-action active">
-                                Paramètres
-                            </button>
-                            <button type="button" class="list-group-item list-group-item-action"><a href="<?= $path ?>/account">Modifier mes
-                                informations</a></button>
-                            <button type="button" class="list-group-item list-group-item-action"><a href="<?= $path ?>/password">Modifier mon mot de
-                                passe</a></button>
-                            <button type="button" class="list-group-item list-group-item-action"><a href="<?= $path ?>/friends">Ma liste
-                                d'amis</a></button>
-                        </div>
-                    </div>
-                    <div class="col-md-4" style="margin-top:60px;">
-                        <div class="alert alert-dark text-center" role="alert">
-                            Paramètres généraux du compte
-                        </div>
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="list-group list-group-flush">
-                                        <button type="button" class="list-group-item list-group-item-action">Votre
-                                            Nom</button>
-                                        <button type="button" class="list-group-item list-group-item-action ">Votre
-                                            Prénom</button>
-                                        <button type="button" class="list-group-item list-group-item-action">Votre
-                                            Adresse e-mail</button>
-                                        <button type="button" class="list-group-item list-group-item-action ">Votre Date
-                                            de naissance</button>
-                                        <button type="button" class="list-group-item list-group-item-action">Vous êtes
-                                            un / une</button>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="list-group list-group-flush">
-                                        <button type="button"
-                                            class="list-group-item list-group-item-action "><?= $_SESSION['user']->nom ?></button>
-                                        <button type="button"
-                                            class="list-group-item list-group-item-action "><?= $_SESSION['user']->prenom ?></button>
-                                        <button type="button"
-                                            class="list-group-item list-group-item-action "><?= $_SESSION['user']->email ?></button>
-                                        <button type="button"
-                                            class="list-group-item list-group-item-action "><?= $_SESSION['user']->date_naissance ?></button>
-                                        <button type="button"
-                                            class="list-group-item list-group-item-action "><?= $_SESSION['user']->genre ?></button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                        </div>
-                    </div>
+            <!--------------->
+            <!-- COLONNE 1 -->
+            <!--------------->
+            <div class="col-md-2">
+                <div class="list-group">
+                    <button type="button" class="list-group-item list-group-item-action active">
+                        Paramètres
+                    </button>
+                    <button type="button" class="list-group-item list-group-item-action"><a
+                            href="<?= $path ?>/account">Modifier mes
+                            informations</a></button>
+                    <button type="button" class="list-group-item list-group-item-action"><a
+                            href="<?= $path ?>/password">Modifier mon mot de
+                            passe</a></button>
+                    <button type="button" class="list-group-item list-group-item-action"><a
+                            href="<?= $path ?>/friends">Ma
+                            liste
+                            d'amis</a></button>
                 </div>
             </div>
-        </div>
+            <!--------------->
+            <!-- COLONNE 2 -->
+            <!--------------->
+            <div class="col-md-7">
+            <div class="jumbotron">
+                
+            <?php var_dump($items)?>
+            
 
-        <?php require "footer.html" ?>
+
+            <!-- <?php foreach($publications as $publication):?>
+            <tr>
+                <th scope="row"><?= $publication->contenu ?></th>
+                <?php endforeach;?> -->
+                
+</div>
+            </div>
+            <!--------------->
+            <!-- COLONNE 3 -->
+            <!--------------->
+            <div class="col-md-3">
+            <div class="jumbotron">
+                    <h1 class="display-4 effet-degrade text-center" style="font-size:35px;">Quoi de neuf <?= $_SESSION['user']->prenom ?> ?</h1>
+                    <?php if(isset($_SESSION['erreur'])){ ?>
+                    <div class="alert alert-warning">
+                        <?= $_SESSION['erreur'] ?>
+                    </div>
+                    <?php } unset($_SESSION['erreur']); ?>
+                    <?php if(isset($_SESSION['succes'])){ ?>
+                    <div class="alert alert-success">
+                        <?= $_SESSION['succes'] ?>
+                    </div>
+                    <?php } unset($_SESSION['succes'])?>
+                </div>
+                <form action="<?= $path ?>/publication_profil" method="POST" class="formulaire_connection"
+                    style="margin-bottom:120px;">
+                    <div class="form-group">
+                        <textarea class="form-control" id="messagePublication" name="messagePublication" rows="3"
+                            maxlength="255"></textarea>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary btn-connecter-accueil">Publier</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <?php require "footer.html" ?>
 </body>
 <?php require "script.html.php" ?>
 

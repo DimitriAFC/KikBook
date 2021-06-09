@@ -1,0 +1,97 @@
+/** White Theme CSS */
+*{
+  transition: background-color 0.6s ease, color 1s ease;
+}
+
+.white p{
+  color:#3d3d3d !important;
+}
+
+/* Body */
+.white {
+  background-color: #e7e7e7;
+}
+
+/* navbar de l'accueil */
+.white .navbar-accueil{
+    background: linear-gradient(to bottom right, #e7e7e7, #d3d2d2);
+    box-shadow: 1px 1px 20px 1px #acacac;
+}
+
+/* Bouton d'inscription */
+.white .btn-inscription-accueil {
+  width: 100%;
+  background-color: #e7e7e7;
+  border:2px solid #f70fff;
+  color: #f70fff;
+  margin-bottom:100px;
+}
+
+/* Bouton d'inscription au survol */
+.white .btn-inscription-accueil:hover {
+  background-color: #d31ada;
+  border:2px solid #d31ada;
+  color: #e7e7e7;
+  margin-bottom:100px;
+  
+}
+
+/* Formulaire page d'accueil */
+.white .formulaire_connection {
+  background-color: #f1f1f1;
+  padding:10px 10px;
+  margin-bottom:10px;
+  border-radius:3px;
+}
+
+/* input du formulaire d'accueil */
+.white input{
+  background-color:#d6d6d6 !important;
+  border:1px solid #d6d6d6 !important;
+  color:#3d3d3d !important;
+}
+
+/* Label du formulaire d'accueil */
+.white label {
+  margin-bottom:10px;
+  margin-top:10px;
+  color:#3d3d3d;
+}
+
+/* Bouton se connecter page d'accueil */
+.white .btn-connecter-accueil {
+  width:50%;
+  margin-top:20px;
+  margin-bottom: 10px;
+  background-color: #f1f1f1;
+  border:2px solid #12d6df;
+  color:#12d6df;
+}
+
+/* Bouton se connecter page d'accueil au survol */
+.btn-connecter-accueil:hover , .btn-inscrire:hover{
+  background-color: #0dafb8;
+  border:2px solid #12d6df;
+  color:#fff !important;
+}
+
+/* Select du formulaire */
+.white select{
+  background-color:#d6d6d6 !important;
+  border:1px solid #d6d6d6 !important;
+  color:#3d3d3d !important;
+}
+
+/* Bouton retour à l'accueil page inscription */
+.white .btn-retour-accueil{
+  background-color: #e7e7e7;
+  border:1px solid #e7e7e7;
+  margin-bottom:10px;
+}
+
+/* Bouton retour à l'accueil page inscription au survol */
+.white .btn-retour-accueil:hover{
+  background-color: #e7e7e7;
+  border:1px solid #3d3d3d;
+  margin-bottom:10px;
+}

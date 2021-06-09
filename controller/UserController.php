@@ -1,5 +1,4 @@
 <?php
-
 namespace Kikbook\controller;
 
 use Kikbook\Route;
@@ -7,13 +6,13 @@ use Kikbook\Router;
 use Kikbook\View;
 use Kikbook\model\User;
 
-
 class UserController
 {
     public static function route()
     {
         $router = new Router();
-        $router->addRoute(new Route("/register", "UserController", "inscription"));
+        $router->addRoute(new Route("/register", "UserController", "register"));
+        $router->addRoute(new Route("/inscription", "UserController", "inscription"));
         $router->addRoute(new Route("/profil", "UserController", "profil"));
         $router->addRoute(new Route("/off", "UserController", "off"));
         $router->addRoute(new Route("/connexion", "UserController", "connexion"));
@@ -22,61 +21,148 @@ class UserController
         $router->addRoute(new Route("/updateProfil", "UserController", "updateProfil"));
         $router->addRoute(new Route("/updatePassword", "UserController", "updatePassword"));
 
-
-
         $route = $router->findRoute();
-        if ($route) {
+        if ($route)
+        {
             $route->execute();
-        } else {
+        }
+        else
+        {
             echo "Page Not Found";
         }
+    }
+
+    public static function register()
+    {
+        View::setTemplate('register');
+        View::display();
+
     }
 
     // Fonction inscription de l'utilisateur
     public static function inscription()
     {
-        View::setTemplate('register');
-        View::display();
-        
-        $user = new User;
-        $user->nom = $_POST['nom'];
-        $user->prenom = $_POST['prenom'];
-        $user->email = $_POST['email'];
-        $user->password = $_POST['password'];
-        $user->date_naissance = $_POST['date_naissance'];
-        $user->genre = $_POST['genre'];
-        $user->register();
+        if (empty($_POST['nom']))
+        {
+            $_SESSION['erreur'] = "Merci de renseigner un nom.";
+            $router = new Router();
+            $path = $router->getBasePath();
+            header("location:{$path}/register");
+        }
+        else
+        {
+            if (empty($_POST['prenom']))
+            {
+                $_SESSION['erreur'] = "Merci de renseigner un prénom.";
+                $router = new Router();
+                $path = $router->getBasePath();
+                header("location:{$path}/register");
+            }
+            else
+            {
+                if (empty($_POST['email']))
+                {
+                    $_SESSION['erreur'] = "Merci de renseigner un e-mail.";
+                    $router = new Router();
+                    $path = $router->getBasePath();
+                    header("location:{$path}/register");
+                }
+                else
+                {
+                    if (empty($_POST['password']))
+                    {
+                        $_SESSION['erreur'] = "Merci de renseigner un mot de passe.";
+                        $router = new Router();
+                        $path = $router->getBasePath();
+                        header("location:{$path}/register");
+                    }
+                    else
+                    {
+                        if (empty($_POST['date_naissance']))
+                        {
+                            $_SESSION['erreur'] = "Merci de renseigner une date de naissance.";
+                            $router = new Router();
+                            $path = $router->getBasePath();
+                            header("location:{$path}/register");
+                        }
+                        else
+                        {
+                            if (empty($_POST['genre']))
+                            {
+                                $_SESSION['erreur'] = "Merci de renseigner votre genre.";
+                                $router = new Router();
+                                $path = $router->getBasePath();
+                                header("location:{$path}/register");
+                            }
+                            else
+                            {
+                                $user = new User;
+                                $user->nom = $_POST['nom'];
+                                $user->prenom = $_POST['prenom'];
+                                $user->email = $_POST['email'];
+                                $user->password = $_POST['password'];
+                                $user->date_naissance = $_POST['date_naissance'];
+                                $user->genre = $_POST['genre'];
+                                $user->register();
 
-        $loginUser = new User;
-        $_SESSION['user'] = $loginUser->connexion($user->email, $user->password);
+                                $loginUser = new User;
+                                $_SESSION['user'] = $loginUser->connexion($user->email, $user->password);
 
-        $router = new Router();
-        $path =  $router->getBasePath();
-        header("location: {$path}/");
-    
+                                $_SESSION['succes'] = "Votre inscription à bien été prise en compte !";
+                                $router = new Router();
+                                $path = $router->getBasePath();
+                                header("location:{$path}/");
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
     }
 
     // Fonction connexion de l'utilisateur
-     public static function connexion()
+    public static function connexion()
     {
-        $email = $_POST['email'];
-        $password = $_POST['password'];
-        $users = new User;
+        if (empty($_POST['email']))
+        {
+            $_SESSION['erreur'] = "Merci de renseigner un mail valide.";
+            header("location:{$path}/KikBook");
+        }
+        else
+        {
+            if (empty($_POST['password']))
+            {
+                $_SESSION['erreur'] = "Merci de saisir un mot de passe.";
+                header("location:{$path}/KikBook");
+            }
+            else
+            {
 
-        $user = $users->connexion($email, $password);
+                $email = $_POST['email'];
+                $password = $_POST['password'];
+                $users = new User;
 
-        if ($user != null) {
-            $_SESSION['user'] = $user;
-            $router = new Router();
-            $path =  $router->getBasePath();
-            header("location: {$path}/profil");
-        } else {
-                unset($_SESSION['user']);
-                $router = new Router();
-                $path = $router->getBasePath();
-                header("location:{$path}/");
+                $user = $users->connexion($email, $password);
+
+                if ($user != null)
+                {
+                    $_SESSION['user'] = $user;
+                    $router = new Router();
+                    $path = $router->getBasePath();
+                    header("location: {$path}/news");
+                }
+                else
+                {
+                    $_SESSION['erreur'] = "L'email ou le mot de passe ne sont pas valide.";
+                    unset($_SESSION['user']);
+                    $router = new Router();
+                    $path = $router->getBasePath();
+                    header("location:{$path}/");
+                }
             }
         }
+    }
 
     public static function profil()
     {
@@ -124,31 +210,31 @@ class UserController
         $_SESSION['user'] = $loginUser->connexion($user->email, $user->password);
 
         $router = new Router();
-        $path =  $router->getBasePath();
+        $path = $router->getBasePath();
         header("location: {$path}/account");
     }
 
     public static function updatePassword()
     {
-        if($_POST['password'] === $_POST['newPassword']){
-        $user = new User;
-        $user->id_user = $_SESSION['user']->id_user;
-        $user->email = $_SESSION['user']->email;
-        $user->password = $_POST['password'];
-        $user->updatePassword();
-        $loginUser = new User;
+        if ($_POST['password'] === $_POST['newPassword'])
+        {
+            $user = new User;
+            $user->id_user = $_SESSION['user']->id_user;
+            $user->email = $_SESSION['user']->email;
+            $user->password = $_POST['password'];
+            $user->updatePassword();
+            $loginUser = new User;
 
-        $_SESSION['user'] = $loginUser->connexion($user->email, $user->password);
+            $_SESSION['user'] = $loginUser->connexion($user->email, $user->password);
 
-        $router = new Router();
-        $path =  $router->getBasePath();
-        header("location: {$path}/password");
-        } else {
-            echo'PAS BON';
+            $router = new Router();
+            $path = $router->getBasePath();
+            header("location: {$path}/password");
+        }
+        else
+        {
+            echo 'PAS BON';
         }
     }
 }
-    
-
-
 
