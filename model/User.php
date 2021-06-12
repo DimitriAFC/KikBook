@@ -13,6 +13,7 @@ class User {
     public $password;
     public $date_naissance;
     public $genre;
+    public $date_inscription;
     public $role;
 
     public function register(){
@@ -68,5 +69,31 @@ class User {
         $sth->execute();
         databaseConnexion::Close();  
     }
+
+    public static function getAllUser(){
+        $dbh = databaseConnexion::open();
+        $query = "SELECT * FROM `user`;";
+        $sth = $dbh->prepare($query);
+        $sth -> execute();
+        $sth->setFetchMode(PDO::FETCH_CLASS,"Kikbook\\model\\User");
+        $items = $sth->fetchAll();
+        databaseConnexion::close();
+        return $items;
+        }
+
+        public function addFriend($id_demandeur, $id_repondant, $acceptation){
+            $id_demandeur = (int) $id_demandeur;
+            $id_repondant = (int) $id_repondant;
+            $acceptation = (int) $acceptation;
+            $dbh = databaseConnexion::open();
+            $query = "INSERT INTO `friend`(`id_demandeur`, `id_repondant`, `acceptation`) 
+            VALUES (:id_demandeur, :id_repondant, :acceptation);";
+            $sth = $dbh->prepare($query);
+            $sth->bindParam(":id_demandeur", $id_demandeur);
+            $sth->bindParam(":id_repondant", $id_repondant);
+            $sth->bindParam(":acceptation", $acceptation);
+            $sth->execute();
+            databaseConnexion::close();
+        }
 
 }

@@ -5,10 +5,11 @@ namespace Kikbook\model;
 use Kikbook\model\databaseConnexion;
 use PDO;
 
-class Publish {
+class Profil {
     public $id_publication;
     public $id_user;
     public $contenu;
+    public $date_publication;
 
     public function publier($publish){
         $publish->id_user = (int) $publish->id_user;
@@ -23,15 +24,16 @@ class Publish {
         databaseConnexion::close();
     }
 
-    public static function getAllPublish(){
+    public static function getAllPublish($id_user){
         $dbh = databaseConnexion::open();
-        $query = "SELECT * FROM `publication`;";
+        $query = "SELECT * FROM `publication` WHERE `id_user` = :id_user";
         $sth = $dbh->prepare($query);
-        $sth->execute();
-        $sth->setFetchMode(PDO::FETCH_CLASS,"Kikbook\\model\\Publish");
+        $sth->bindParam(":id_user", $id_user);
+        $sth -> execute(array(
+            'id_user' => $id_user));
+        $sth->setFetchMode(PDO::FETCH_CLASS,"Kikbook\\model\\Profil");
         $items = $sth->fetchAll();
         databaseConnexion::close();
         return $items;
         }
-
 }

@@ -20,6 +20,10 @@ class UserController
         $router->addRoute(new Route("/account", "UserController", "account"));
         $router->addRoute(new Route("/updateProfil", "UserController", "updateProfil"));
         $router->addRoute(new Route("/updatePassword", "UserController", "updatePassword"));
+        $router->addRoute(new Route("/getAllUsers", "UserController", "getAllUsers"));
+        $router->addRoute(new Route("/addFriend/{id}", "UserController", "addFriend"));
+
+
 
         $route = $router->findRoute();
         if ($route)
@@ -150,7 +154,7 @@ class UserController
                     $_SESSION['user'] = $user;
                     $router = new Router();
                     $path = $router->getBasePath();
-                    header("location: {$path}/news");
+                    header("location: {$path}/profil");
                 }
                 else
                 {
@@ -236,5 +240,17 @@ class UserController
             echo 'PAS BON';
         }
     }
+
+    public static function addFriend($id){
+        $id_repondant = $id;
+        $id_demandeur = $_SESSION['user']->id_user;
+        $acceptation = 0;
+        User::addFriend($id_demandeur,$id_repondant,$acceptation);
+        $_SESSION['erreur'] = "Votre demande à été envoyé !";
+        $router = new Router();
+        $path = $router->getBasePath();
+        header("location:{$path}/profil");
+    }
+   
 }
 
