@@ -3,6 +3,8 @@
 <?php require "head.html.php" ?>
 
 <body>
+<?php unset($_SESSION['user']) ?>
+
     <?php require "navbar-off.html" ?>
     <div class="container-fluid" style="margin-top:30px;">
         <div class="row">

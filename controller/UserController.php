@@ -21,7 +21,7 @@ class UserController
         $router->addRoute(new Route("/updateProfil", "UserController", "updateProfil"));
         $router->addRoute(new Route("/updatePassword", "UserController", "updatePassword"));
         $router->addRoute(new Route("/getAllUsers", "UserController", "getAllUsers"));
-        $router->addRoute(new Route("/addFriend/{id}", "UserController", "addFriend"));
+        // $router->addRoute(new Route("/addFriends/{id}", "UserController", "addFriends"));
 
 
 
@@ -38,9 +38,12 @@ class UserController
 
     public static function register()
     {
+        if(isset($_SESSION['user'])){
+            header("location: {$path}/Kikbook/profil");
+        }else {
         View::setTemplate('register');
         View::display();
-
+}
     }
 
     // Fonction inscription de l'utilisateur
@@ -176,8 +179,14 @@ class UserController
 
     public static function password()
     {
-        View::setTemplate('password');
-        View::display();
+        if(isset($_SESSION['user'])){
+            View::setTemplate('password');
+            View::display();
+            }else {
+                $router = new Router();
+                $path = $router->getBasePath();
+                header("location: {$path}/");
+            }
     }
 
     // Fonction de déconnexion de l'utilisateur
@@ -192,8 +201,15 @@ class UserController
 
     public static function account()
     {
+        if(isset($_SESSION['user'])){
         View::setTemplate('account');
         View::display();
+            }else {
+                $router = new Router();
+                $path = $router->getBasePath();
+                header("location: {$path}/");
+            }
+        
 
     }
 
@@ -241,16 +257,16 @@ class UserController
         }
     }
 
-    public static function addFriend($id){
-        $id_repondant = $id;
-        $id_demandeur = $_SESSION['user']->id_user;
-        $acceptation = 0;
-        User::addFriend($id_demandeur,$id_repondant,$acceptation);
-        $_SESSION['erreur'] = "Votre demande à été envoyé !";
-        $router = new Router();
-        $path = $router->getBasePath();
-        header("location:{$path}/profil");
-    }
+    // public static function addFriends($id){
+    //     $id_repondant = $id;
+    //     $id_demandeur = $_SESSION['user']->id_user;
+    //     $acceptation = 0;
+    //     User::addFriend($id_demandeur,$id_repondant,$acceptation);
+    //     $_SESSION['succes'] = "Votre demande à été envoyé !";
+    //     $router = new Router();
+    //     $path = $router->getBasePath();
+    //     header("location:{$path}/profil");
+    // }
    
 }
 

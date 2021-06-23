@@ -5,21 +5,21 @@
 <body>
     <?php require "navbar.html.php" ?>
     <div class="container-fluid">
-	<div class="row">
-		<div class="col-md-12">
-        <?php if(isset($_SESSION['erreur'])){ ?>
-                    <div class="alert alert-warning text-center" style="margin:20px; 0px;" >
-                        <?= $_SESSION['erreur'] ?>
-                    </div>
-                    <?php } unset($_SESSION['erreur']); ?>
-                    <?php if(isset($_SESSION['succes'])){ ?>
-                    <div class="alert alert-success text-center" style="margin:20px; 0px;">
-                        <?= $_SESSION['succes'] ?>
-                    </div>
-                    <?php } unset($_SESSION['succes'])?>
-		</div>
-	</div>
-</div>
+        <div class="row">
+            <div class="col-md-12">
+                <?php if(isset($_SESSION['erreur'])){ ?>
+                <div class="alert alert-warning text-center" style="margin:20px; 0px;">
+                    <?= $_SESSION['erreur'] ?>
+                </div>
+                <?php } unset($_SESSION['erreur']); ?>
+                <?php if(isset($_SESSION['succes'])){ ?>
+                <div class="alert alert-success text-center" style="margin:20px; 0px;">
+                    <?= $_SESSION['succes'] ?>
+                </div>
+                <?php } unset($_SESSION['succes'])?>
+            </div>
+        </div>
+    </div>
     <div class="container-fluid" style="margin-top:30px;">
         <div class="row">
             <!--------------->
@@ -75,9 +75,30 @@
             <!-- COLONNE 3 -->
             <!--------------->
             <div class="col-md-3">
-                <div class="jumbotron jumbotron-fluid" style="background-color:white;">
+                <div class="jumbotron jumbotron-fluid"
+                    style="background-color:white; padding-bottom:20px; margin-bottom:20px;">
                     <div class="container">
                         <h1 class="display-4 effet-degrade text-center" style="font-size:35px;">Mes amis</h1>
+                        <?php foreach($infos as $info):?>
+                        <?php if($info->acceptation == 1){
+                            if($_SESSION['user']->id_user == $info->id_demandeur){
+                                    echo" <div class='alert alert-primary' role='alert'>
+                                    <p>Amis avec: " .$info->id_repondant. "</p> 
+                                    <p>Depuis le: " .$info->date_ajout. "</p>
+                                    </div>";
+                                }
+                                if($_SESSION['user']->id_user == $info->id_repondant){
+                                    echo" <div class='alert alert-primary' role='alert'>
+                                    <p>Amis avec: " .$info->id_demandeur. "</p> 
+                                    <p>Depuis le: " .$info->date_ajout. "</p>
+                                    </div>";
+                                }
+                                }
+                                else{
+                                 echo"<div style='display:none;'></div>";
+                                } ?>
+                        <?php endforeach;?>
+                        
                     </div>
                 </div>
                 <div class="jumbotron jumbotron-fluid" style="background-color:white; padding-bottom:20px;">
@@ -90,13 +111,14 @@
                                         echo"<div class='col text-center'>
                                         <div class='alert alert-primary' role='alert'>
                                         ".$user->nom. ' ' .$user->prenom. 
-                                         " <a class='btn btn-warning' href='$path/addFriend/$user->id_user'>Ajouter</a></div></div>";
+                                         " <a class='btn btn-success' href='$path/addFriends/$user->id_user'>Demander</a></div></div>";
                                                 } ?>
                         <?php endforeach;?>
+
                     </div>
                 </div>
 
-                
+
             </div>
 
             <!--------------->
@@ -117,6 +139,9 @@
                     <button type="button" class="list-group-item list-group-item-action"><a
                             href="<?= $path ?>/friends">Ma
                             liste
+                            d'amis</a></button>
+                    <button type="button" class="list-group-item list-group-item-action"><a
+                            href="<?= $path ?>/requestfriends">Mes demandes d'amis
                             d'amis</a></button>
                 </div>
             </div>

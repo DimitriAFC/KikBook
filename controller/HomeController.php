@@ -28,14 +28,27 @@ class HomeController
 
     public static function home()
     {
+        if(isset($_SESSION['user'])){
+            $router = new Router();
+            $path = $router->getBasePath();
+            header("location: {$path}/profil");
+        }
+        else{
         View::setTemplate('home');
         View::display();
+    }
     }
 
     public static function news()
     {
-        View::setTemplate('news');
-        View::display();
+        if(isset($_SESSION['user'])){
+            View::setTemplate('news');
+            View::display();
+            }else {
+                $router = new Router();
+                $path = $router->getBasePath();
+                header("location: {$path}/");
+            }
     }
 }
 
