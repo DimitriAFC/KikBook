@@ -60,11 +60,21 @@
                             <?= $publication->date_publication ?></p>
                         <p><?= $publication->contenu ?></p>
                         <p>
-                            <form action="<?= $path ?>/publication_profil" method="POST" class="">
+                            <form action="<?= $path ?>/publication_commentaire" method="POST" class="">
                                 <div class="form-group">
+                                <div class="row">
+                                <div class="col-md-10">
                                     <input class="form-control" id="messagePublication" name="messagePublication"
                                         placeholder="Laisser un commentaire" maxlength="255">
+                                        </div>
+                                        <div class="col-md-2">
+                                        <div class="text-center">
+                                        <button type="submit" class="btn btn-primary">Publier</button>
+                                        </div>
+                                        </div>
+                                        </div>
                                 </div>
+                                
                             </form>
                         </p>
                     </div>
@@ -110,9 +120,13 @@
                                 }else {
                                         echo"<div class='col text-center'>
                                         <div class='alert alert-primary' role='alert'>
-                                        ".$user->nom. ' ' .$user->prenom. 
-                                         " <a class='btn btn-success' href='$path/addFriends/$user->id_user'>Demander</a></div></div>";
-                                                } ?>
+                                        <div class='row'>
+                                        <div class='col-md-8'>" .$user->nom. ' ' .$user->prenom. "</div>
+                                        <div class='col-md-4'> <a class='btn btn-success' href='$path/addFriends/$user->id_user'>Demander</a></div>
+                                        </div>
+                                        </div>
+                                        </div>"
+                                                ;} ?>
                         <?php endforeach;?>
 
                     </div>

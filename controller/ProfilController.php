@@ -115,7 +115,7 @@ class ProfilController
 
     public static function suppFriends($id){
         $id_relation = $id;
-        Profil::suppFriends();
+        Profil::suppFriends($id);
         View::bindVariable("id_relation", $id_relation);
         $_SESSION['succes'] = "Amis retiré de votre liste !";
         $router = new Router();

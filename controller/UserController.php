@@ -115,7 +115,7 @@ class UserController
                                 $loginUser = new User;
                                 $_SESSION['user'] = $loginUser->connexion($user->email, $user->password);
 
-                                $_SESSION['succes'] = "Votre inscription à bien été prise en compte !";
+                                $_SESSION['succes'] = "BIENVENUE SUR KIIKBOOK !";
                                 $router = new Router();
                                 $path = $router->getBasePath();
                                 header("location:{$path}/");
