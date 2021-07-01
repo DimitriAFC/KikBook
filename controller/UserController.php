@@ -5,6 +5,7 @@ use Kikbook\Route;
 use Kikbook\Router;
 use Kikbook\View;
 use Kikbook\model\User;
+use Kikbook\model\Profil;
 
 class UserController
 {
@@ -21,7 +22,8 @@ class UserController
         $router->addRoute(new Route("/updateProfil", "UserController", "updateProfil"));
         $router->addRoute(new Route("/updatePassword", "UserController", "updatePassword"));
         $router->addRoute(new Route("/getAllUsers", "UserController", "getAllUsers"));
-        // $router->addRoute(new Route("/addFriends/{id}", "UserController", "addFriends"));
+        $router->addRoute(new Route("/seeuser/{id}", "UserController", "seeuser"));
+        $router->addRoute(new Route("/requestfriends", "UserController", "requestfriends"));
 
 
 
@@ -228,6 +230,7 @@ class UserController
         $loginUser = new User;
 
         $_SESSION['user'] = $loginUser->connexion($user->email, $user->password);
+        $_SESSION['succes'] = "Profil mise à jour !";
 
         $router = new Router();
         $path = $router->getBasePath();
@@ -246,6 +249,7 @@ class UserController
             $loginUser = new User;
 
             $_SESSION['user'] = $loginUser->connexion($user->email, $user->password);
+            $_SESSION['succes'] = "Mot de passe mise à jour !";
 
             $router = new Router();
             $path = $router->getBasePath();
@@ -257,16 +261,36 @@ class UserController
         }
     }
 
-    // public static function addFriends($id){
-    //     $id_repondant = $id;
-    //     $id_demandeur = $_SESSION['user']->id_user;
-    //     $acceptation = 0;
-    //     User::addFriend($id_demandeur,$id_repondant,$acceptation);
-    //     $_SESSION['succes'] = "Votre demande à été envoyé !";
-    //     $router = new Router();
-    //     $path = $router->getBasePath();
-    //     header("location:{$path}/profil");
-    // }
-   
+    public static function seeuser($id)
+    {
+        if(isset($_SESSION['user'])){
+            $users = User::getUserProfil($id);
+            $id_user = $id;
+            View::bindVariable("users", $users);
+            View::bindVariable("id_user", $id_user);
+            View::setTemplate('seeuser');
+            View::display();
+            }else {
+                $router = new Router();
+                $path = $router->getBasePath();
+                header("location: {$path}/");
+            }
+    }
+
+    public static function requestfriends()
+    {
+        if(isset($_SESSION['user'])){
+            $id_repondant = $_SESSION['user']->id_user;
+            $requests = Profil::friendRequest($id_repondant);
+            View::bindVariable("id_repondant", $id_repondant);
+            View::bindVariable("requests", $requests);
+            View::setTemplate('requestfriends');
+            View::display();
+            }else {
+                $router = new Router();
+                $path = $router->getBasePath();
+                header("location: {$path}/");
+            }
+    }
 }
 

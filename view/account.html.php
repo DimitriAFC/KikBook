@@ -8,7 +8,19 @@
         <div class="col-md-12">
             <div class="row">
                 <div class="col-md-4"></div>
-                <div class="col-md-4" style="margin-top:30px;">
+                <div class="col-md-4">
+            <div class="col-md-12">
+                <?php if(isset($_SESSION['erreur'])){ ?>
+                <div class="alert alert-warning text-center">
+                    <?= $_SESSION['erreur'] ?>
+                </div>
+                <?php } unset($_SESSION['erreur']); ?>
+                <?php if(isset($_SESSION['succes'])){ ?>
+                <div class="alert alert-success text-center">
+                    <?= $_SESSION['succes'] ?>
+                </div>
+                <?php } unset($_SESSION['succes'])?>
+            </div>
                     <button type="submit" class="btn btn-primary"><a href="<?= $path ?>/profil">Retour au
                             profil</a></button>
                     <div class="alert alert-dark text-center" role="alert">
@@ -49,9 +61,7 @@
             </div>
         </div>
     </div>
-
     <?php require "footer.html" ?>
 </body>
 <?php require "script.html.php" ?>
-
 </html>

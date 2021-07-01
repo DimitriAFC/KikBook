@@ -1,12 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <?php require "head.html.php" ?>
-
 <body>
 <?php unset($_SESSION['user']) ?>
-
     <?php require "navbar-off.html" ?>
-    <div class="container-fluid" style="margin-top:30px;">
+    <div class="container-fluid">
         <div class="row">
             <div class="col-md-4">
             </div>
@@ -23,11 +21,11 @@
             </div>
         </div>
     </div>
-    <div class="container-xl" style="margin-top:30px;">
+    <div class="container-xl">
         <div class="row">
             <div class="col-sm-6">
                 <img src="public/images/phone.png" class="rounded mx-auto d-block logo-accueil image-presentation"
-                    alt="kikbook-logo" style="height:550px; width:470px;">
+                    alt="kikbook-logo" >
             </div>
             <div class="col-sm-4">
                 <h1 class="text-center nom-accueil effet-degrade"> KIKBOOK </h1>
@@ -66,5 +64,4 @@
     <?php require "footer.html" ?>
 </body>
 <?php require "script.html.php" ?>
-
 </html>

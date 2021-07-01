@@ -14,10 +14,9 @@ class ProfilController
         $router = new Router();
         $router->addRoute(new Route("/publication_profil", "ProfilController", "publication_profil"));
         $router->addRoute(new Route("/friends", "ProfilController", "friends"));
-        $router->addRoute(new Route("/requestfriends", "ProfilController", "requestfriends"));
         $router->addRoute(new Route("/addFriends/{id}", "ProfilController", "addFriends"));
         $router->addRoute(new Route("/suppFriends/{id}", "ProfilController", "suppFriends"));
-
+        $router->addRoute(new Route("/acceptFriends/{id}", "ProfilController", "acceptFriends"));
 
 
 
@@ -58,14 +57,16 @@ class ProfilController
      public static function profil(){
         $id_user =  $_SESSION['user']->id_user;
         $publications = Profil::getAllPublish($id_user);
-        $users = User::getAllUser();
-        $infos = Profil::getFriendInfos();
+        $users = User::getAllUser(); 
+        $infos = Profil::getFriendInfosRepondant();
+        $informations = Profil::getFriendInfosDemandeur();
 
         if(isset($_SESSION['user'])){
         View::setTemplate('profil');
         View::bindVariable("users", $users);
         View::bindVariable("publications", $publications);
         View::bindVariable("infos", $infos);
+        View::bindVariable("informations", $informations);
         View::display();
         }else {
             $router = new Router();
@@ -78,9 +79,11 @@ class ProfilController
     {
         if(isset($_SESSION['user'])){
                 $id_user =  $_SESSION['user']->id_user;
-                $infos = Profil::getFriendInfos();
+                $infos = Profil::getFriendInfosRepondant();
+                $informations = Profil::getFriendInfosDemandeur();
                 View::setTemplate('friends');
                 View::bindVariable("infos", $infos);
+                View::bindVariable("informations", $informations);
                 View::display();
                 
         } else{
@@ -90,28 +93,33 @@ class ProfilController
               }
     }
 
-    public static function requestfriends()
-    {
-        if(isset($_SESSION['user'])){
-            View::setTemplate('requestfriends');
-            View::display();
-            }else {
-                $router = new Router();
-                $path = $router->getBasePath();
-                header("location: {$path}/");
-            }
-    }
+   
 
     public static function addFriends($id){
         $id_repondant = $id;
         $id_demandeur = $_SESSION['user']->id_user;
         $acceptation = 0;
         Profil::addFriends($id_demandeur,$id_repondant,$acceptation);
+        View::bindVariable("id_repondant", $id_repondant);
+        View::bindVariable("id_demandeur", $id_demandeur);
+        View::bindVariable("acceptation", $acceptation);
         $_SESSION['succes'] = "Votre demande à été envoyé !";
         $router = new Router();
         $path = $router->getBasePath();
         header("location:{$path}/profil");
     }
+
+    public static function acceptFriends(){
+        $id_repondant = $_SESSION['user']->id_user;
+        Profil::acceptFriends($id_repondant);
+        View::bindVariable("id_repondant", $id_repondant);
+        $_SESSION['succes'] = "Invitation accepté !";
+        $router = new Router();
+        $path = $router->getBasePath();
+        header("location:{$path}/requestfriends");
+    }
+
+
 
     public static function suppFriends($id){
         $id_relation = $id;
@@ -122,5 +130,6 @@ class ProfilController
         $path = $router->getBasePath();
         header("location:{$path}/friends");
     }
+
 }
 

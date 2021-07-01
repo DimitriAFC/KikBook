@@ -19,18 +19,25 @@
                     <?= $_SESSION['succes'] ?>
                 </div>
                 <?php } unset($_SESSION['succes'])?>
-        <?php foreach($infos as $info):?>
+        <?php foreach($informations as $info):?>
                         <?php if($info->acceptation == 1){
-                            if($_SESSION['user']->id_user == $info->id_demandeur){
+                            if($_SESSION['user']->id_user == $info->id_repondant){
                                     echo" <div class='alert alert-primary' role='alert'>
-                                    <p>Amis avec: " .$info->id_repondant. "</p> 
+                                    <p>Amis avec: " .$info->nom. ' ' .$info->prenom. "</p> 
                                     <p>Depuis le: " .$info->date_ajout. "</p>
                                     <p><a class='btn btn-danger' href='$path/suppFriends/$info->id_relation'>Supprimer</a>
                                     </div>";
                                 }
-                                if($_SESSION['user']->id_user == $info->id_repondant){
+                                }
+                                else{
+                                 echo"<div style='display:none;'></div>";
+                                } ?>
+                        <?php endforeach;?>
+                        <?php foreach($infos as $info):?>
+                        <?php if($info->acceptation == 1){
+                            if($_SESSION['user']->id_user == $info->id_demandeur){
                                     echo" <div class='alert alert-primary' role='alert'>
-                                    <p>Amis avec: " .$info->id_demandeur. "</p> 
+                                    <p>Amis avec: " .$info->nom. ' ' .$info->prenom. "</p> 
                                     <p>Depuis le: " .$info->date_ajout. "</p>
                                     <p><a class='btn btn-danger' href='$path/suppFriends/$info->id_relation'>Supprimer</a>
                                     </div>";

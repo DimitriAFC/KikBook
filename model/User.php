@@ -72,7 +72,7 @@ class User {
 
     public static function getAllUser(){
         $dbh = databaseConnexion::open();
-        $query = "SELECT * FROM `user`;";
+        $query = "SELECT * FROM `user` ORDER BY rand() LIMIT 5;";
         $sth = $dbh->prepare($query);
         $sth -> execute();
         $sth->setFetchMode(PDO::FETCH_CLASS,"Kikbook\\model\\User");
@@ -81,19 +81,17 @@ class User {
         return $items;
         }
 
-        // public function addFriend($id_demandeur, $id_repondant, $acceptation){
-        //     $id_demandeur = (int) $id_demandeur;
-        //     $id_repondant = (int) $id_repondant;
-        //     $acceptation = (int) $acceptation;
-        //     $dbh = databaseConnexion::open();
-        //     $query = "INSERT INTO `friend`(`id_demandeur`, `id_repondant`, `acceptation`) 
-        //     VALUES (:id_demandeur, :id_repondant, :acceptation);";
-        //     $sth = $dbh->prepare($query);
-        //     $sth->bindParam(":id_demandeur", $id_demandeur);
-        //     $sth->bindParam(":id_repondant", $id_repondant);
-        //     $sth->bindParam(":acceptation", $acceptation);
-        //     $sth->execute();
-        //     databaseConnexion::close();
-        // }
+    public static function getUserProfil($id_user){
+        $dbh = databaseConnexion::open();
+        $query = "SELECT * FROM `user` WHERE `id_user` = :id_user;";
+        $sth = $dbh->prepare($query);
+        $sth->bindParam(":id_user",$id_user);
+        $sth -> execute(array(
+            'id_user' => $id_user));
+        $sth->setFetchMode(PDO::FETCH_CLASS,"Kikbook\\model\\User");
+        $items = $sth->fetchAll();
+        databaseConnexion::close();
+        return $items;
+            }
 
 }

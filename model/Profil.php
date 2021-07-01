@@ -6,6 +6,12 @@ use Kikbook\model\databaseConnexion;
 use PDO;
 
 class Profil {
+    public $id_relation;
+    public $date_ajout;
+    public $id_demandeur;
+    public $id_repondant;
+    public $acceptation;
+    
 
     public function publier($publish){
         $publish->id_user = (int) $publish->id_user;
@@ -33,16 +39,28 @@ class Profil {
         return $items;
         }
 
-        public static function getFriendInfos(){
+
+        public static function getFriendInfosRepondant(){
         $dbh = databaseConnexion::open();
-        $query = "SELECT * FROM `friend`;";
+        $query = "SELECT b.id_user, b.nom, b.prenom, a.date_ajout, a.acceptation, a.id_demandeur, a.id_repondant, a.id_relation FROM friend as a JOIN user as b ON (b.id_user = a.id_repondant) ORDER BY rand() LIMIT 5;";
         $sth = $dbh->prepare($query);
         $sth -> execute();
         $sth->setFetchMode(PDO::FETCH_CLASS,"Kikbook\\model\\Profil");
         $items = $sth->fetchAll();
         databaseConnexion::close();
         return $items;
-         }
+             }
+
+        public static function getFriendInfosDemandeur(){
+        $dbh = databaseConnexion::open();
+        $query = "SELECT b.id_user, b.nom, b.prenom, a.date_ajout, a.acceptation, a.id_demandeur, a.id_repondant, a.id_relation FROM friend as a JOIN user as b ON (b.id_user = a.id_demandeur) ORDER BY rand() LIMIT 5;";
+        $sth = $dbh->prepare($query);
+        $sth -> execute();
+        $sth->setFetchMode(PDO::FETCH_CLASS,"Kikbook\\model\\Profil");
+        $items = $sth->fetchAll();
+        databaseConnexion::close();
+        return $items;
+                 }
 
 
         public function addFriends($id_demandeur, $id_repondant, $acceptation){
@@ -68,4 +86,32 @@ class Profil {
         $sth -> execute();
         databaseConnexion::close();  
         }
+
+        public static function friendRequest(){
+            $dbh = databaseConnexion::open();
+            $query = "SELECT a.id_relation, a.date_ajout, a.id_demandeur, a.id_repondant, a.acceptation, b.id_user, b.nom, b.prenom, b.email, b.date_naissance, b.genre, b.date_inscription
+            FROM friend AS a JOIN user AS b ON (a.id_demandeur = b.id_user);";
+            $sth = $dbh->prepare($query);
+            $sth->bindParam(":id_repondant", $id_repondant);
+            $sth->execute(array(
+                'id_repondant' => $id_repondant));
+            $sth->setFetchMode(PDO::FETCH_CLASS,"Kikbook\\model\\Profil");
+            $items = $sth->fetchAll();
+            databaseConnexion::close();
+            return $items;
+        }
+
+        public static function  acceptFriends($id_repondant){
+            $dbh = databaseConnexion::open();
+            $query = "UPDATE `friend` SET`acceptation`= 1 WHERE `id_repondant` = :id_repondant ";
+            $sth = $dbh->prepare($query);
+            $sth->bindParam(":id_repondant", $id_repondant);
+            $sth->execute(array(
+                'id_repondant' => $id_repondant));
+            $sth->setFetchMode(PDO::FETCH_CLASS,"Kikbook\\model\\Profil");
+            $items = $sth->fetchAll();
+            databaseConnexion::close();
+            return $items;
+        }
+       
 }

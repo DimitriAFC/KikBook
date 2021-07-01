@@ -25,8 +25,7 @@
                 <?php } unset($_SESSION['erreur']) ?>
             </div>
         </div>
-        <form action="<?= $path ?>/inscription" method="POST" class="formulaire_connection"
-            style="margin-bottom:120px;">
+        <form action="<?= $path ?>/inscription" method="POST" class="formulaire_connection">
             <div class="form-group">
                 <label for="nom">Votre Nom</label>
                 <input type="text" class="form-control" id="nom" placeholder="Votre Nom" name="nom">
