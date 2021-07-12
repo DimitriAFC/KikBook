@@ -29,7 +29,10 @@ $router->addRoute(new Route("/publication_profil", "ProfilController", "publicat
 $router->addRoute(new Route("/friends", "ProfilController", "friends")); 
 $router->addRoute(new Route("/addFriends/{*}", "ProfilController", "addFriends"));
 $router->addRoute(new Route("/suppFriends/{*}", "ProfilController", "suppFriends"));
-$router->addRoute(new Route("/acceptFriends/{id}", "ProfilController", "acceptFriends"));
+$router->addRoute(new Route("/acceptFriends/{*}", "ProfilController", "acceptFriends"));
+$router->addRoute(new Route("/deletePublish/{*}", "ProfilController", "deletePublish"));
+$router->addRoute(new Route("/updatePublish/{*}", "ProfilController", "updatePublish"));
+
 
 
 

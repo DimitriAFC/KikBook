@@ -17,6 +17,8 @@ class ProfilController
         $router->addRoute(new Route("/addFriends/{id}", "ProfilController", "addFriends"));
         $router->addRoute(new Route("/suppFriends/{id}", "ProfilController", "suppFriends"));
         $router->addRoute(new Route("/acceptFriends/{id}", "ProfilController", "acceptFriends"));
+        $router->addRoute(new Route("/deletePublish/{id}", "ProfilController", "deletePublish"));
+        $router->addRoute(new Route("/updatePublish/{id}", "ProfilController", "updatePublish"));
 
 
 
@@ -119,8 +121,6 @@ class ProfilController
         header("location:{$path}/requestfriends");
     }
 
-
-
     public static function suppFriends($id){
         $id_relation = $id;
         Profil::suppFriends($id);
@@ -130,6 +130,24 @@ class ProfilController
         $path = $router->getBasePath();
         header("location:{$path}/friends");
     }
+
+    public static function deletePublish($id_publication){
+        Profil::deletePublish($id_publication);
+        $_SESSION['succes'] = "Publication supprimé !";
+        $router = new Router();
+        $path = $router->getBasePath();
+        header("location:{$path}/profil");
+    }
+
+    public static function updatePublish($id_publication){ 
+        $contenu = $_POST['messageModifier'];
+        Profil::updatePublish($id_publication, $contenu);
+        $_SESSION['succes'] = "Publication modifié !";
+        $router = new Router();
+        $path = $router->getBasePath();
+        header("location:{$path}/profil");
+    }
+    
 
 }
 

@@ -266,8 +266,10 @@ class UserController
         if(isset($_SESSION['user'])){
             $users = User::getUserProfil($id);
             $id_user = $id;
+            $elements = Profil::getAllInfosUsers($id_user);
             View::bindVariable("users", $users);
             View::bindVariable("id_user", $id_user);
+            View::bindVariable("elements", $elements);
             View::setTemplate('seeuser');
             View::display();
             }else {

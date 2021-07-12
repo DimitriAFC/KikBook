@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -11,6 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@300&display=swap" rel="stylesheet">
     <title>Kikbook</title>
 </head>
+
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light" style="margin-bottom:50px;">
         <div class="container-fluid">
@@ -91,10 +93,12 @@
             <div class="col-md-3">
                 <div class="jumbotron jumbotron-fluid">
                     <div class="container">
+                        <?php foreach($users as $user):?>
                         <h1 class="display-4 effet-degrade text-center">Son profil</h1>
-                        <p class="text-center"></p>
-                        <p class="text-center"></p>
-                        <p class="text-center"></p>
+                        <p class="text-center"><?= $user->prenom?> <?= $user->nom?></p>
+                        <p class="text-center"><?= $user->email?></p>
+                        <p class="text-center"><?= $user->date_inscription?></p>
+                        <?php endforeach;?>
                     </div>
                 </div>
             </div>
@@ -103,7 +107,27 @@
             <!--------------->
             <div class="col-md-4">
                 <div class="jumbotron">
-                    <h1 class="display-4 effet-degrade text-center">Publications de </h1>
+                    <?php foreach($users as $user):?>
+                    <h1 class="display-4 effet-degrade text-center" style="font-size:25px;">Publications de
+                        <?= $user->prenom ?> <?= $user->nom?> </h1>
+                    <?php endforeach;?>
+                    <?php foreach($elements as $element):?>
+                    <?php if($id_user === $element->id_user) {
+                        echo "     
+                    <div class='alert alert-primary' role='alert'>
+                        <div class='row'>
+                            <div class='col-lg-8 col-md-8 col-sm-8'>
+                                 <p>"  .$element->nom. ' ' .$element->prenom. "</p>
+                                 <p>Le "  .$element->date_publication. "</p>
+                                 <p>"  .$element->contenu. "</p>
+                            </div>
+                        </div>
+                    </div>";
+                    } else {
+    
+                    }
+                    ?>
+                    <?php endforeach;?>
                 </div>
             </div>
             <!--------------->
@@ -115,11 +139,9 @@
             <!-- COLONNE 4 -->
             <!--------------->
             <div class="col-md-2">
-
             </div>
         </div>
     </div>
-
     <?php require "footer.html" ?>
 </body>
 <?php require "script.html.php" ?>

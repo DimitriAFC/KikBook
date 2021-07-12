@@ -7,7 +7,20 @@
     <div class="container-fluid">
         <div class="col-md-12">
             <div class="row">
-                <div class="col-md-4"></div>
+                <div class="col-md-4">
+                <div class="alert alert-dark text-center" role="alert">
+                        Modifier mon avatar
+                    </div>
+                    <form action="<?= $path ?>/updateAvatar" method="Post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="avatar"></label>
+                        <input type="file" class="form-control-file" id="avatar" id="name">
+                    </div></br>
+                    <p>Format accepté : JPEG , PNG , JPG</p>
+                    <p>Taille maximum : 3Mo</p>
+                        <button type="submit" class="btn btn-primary btn-inscrire">Mettre à jour</button>
+                    </form>
+                </div>
                 <div class="col-md-4">
             <div class="col-md-12">
                 <?php if(isset($_SESSION['erreur'])){ ?>
@@ -21,8 +34,7 @@
                 </div>
                 <?php } unset($_SESSION['succes'])?>
             </div>
-                    <button type="submit" class="btn btn-primary"><a href="<?= $path ?>/profil">Retour au
-                            profil</a></button>
+                
                     <div class="alert alert-dark text-center" role="alert">
                         Modifier mon profil
                     </div>
@@ -56,6 +68,8 @@
                         </div>
                         <button type="submit" class="btn btn-primary btn-inscrire">Mettre à jour</button>
                     </form>
+                    <button type="submit" class="btn btn-primary"><a href="<?= $path ?>/profil">Retour au
+                            profil</a></button>
                 </div>
                 <div class="col-md-4"></div>
             </div>

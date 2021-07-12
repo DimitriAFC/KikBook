@@ -6,15 +6,6 @@ use Kikbook\model\databaseConnexion;
 use PDO;
 
 class User {
-    public $id_user;
-    public $nom;
-    public $prenom;
-    public $email;
-    public $password;
-    public $date_naissance;
-    public $genre;
-    public $date_inscription;
-    public $role;
 
     public function register(){
         $dbh = databaseConnexion::open();

@@ -5,13 +5,7 @@ namespace Kikbook\model;
 use Kikbook\model\databaseConnexion;
 use PDO;
 
-class Profil {
-    public $id_relation;
-    public $date_ajout;
-    public $id_demandeur;
-    public $id_repondant;
-    public $acceptation;
-    
+class Profil { 
 
     public function publier($publish){
         $publish->id_user = (int) $publish->id_user;
@@ -28,7 +22,7 @@ class Profil {
 
     public static function getAllPublish($id_user){
         $dbh = databaseConnexion::open();
-        $query = "SELECT * FROM `publication` WHERE `id_user` = :id_user";
+        $query = "SELECT * FROM `publication` WHERE `id_user` = :id_user ORDER BY id_publication DESC";
         $sth = $dbh->prepare($query);
         $sth->bindParam(":id_user", $id_user);
         $sth -> execute(array(
@@ -37,6 +31,24 @@ class Profil {
         $items = $sth->fetchAll();
         databaseConnexion::close();
         return $items;
+        }
+
+    public static function deletePublish($id_publication){
+        $dbh = databaseConnexion::open();
+        $query = "DELETE FROM `publication` WHERE id_publication = :id_publication;";
+        $sth = $dbh->prepare($query);
+        $sth->bindParam(":id_publication",$id_publication);
+        $sth -> execute();
+        databaseConnexion::close();  
+        }
+
+    public static function updatePublish($id_publication, $contenu){
+        $id_publication = (int)$id_publication;
+        $dbh = databaseConnexion::open();
+        $query = "UPDATE `publication` SET `contenu`= '$contenu' WHERE `id_publication` = $id_publication ;";
+        $sth = $dbh->prepare($query);
+        $sth -> execute();
+        databaseConnexion::close();
         }
 
 
@@ -113,5 +125,21 @@ class Profil {
             databaseConnexion::close();
             return $items;
         }
+
+        public static function getAllInfosUsers($id_user){
+            $dbh = databaseConnexion::open();
+            $query = "SELECT a.id_user, a.nom, a.prenom, a.email, a.date_naissance, a.genre, a.date_inscription, b.contenu, b.date_publication
+            FROM user AS a 
+            JOIN publication AS b
+            WHERE (a.id_user = b.id_user);";
+            $sth = $dbh->prepare($query);
+            $sth->bindParam(":id_user", $id_user);
+            $sth -> execute(array(
+                'id_user' => $id_user));
+            $sth->setFetchMode(PDO::FETCH_CLASS,"Kikbook\\model\\Profil");
+            $items = $sth->fetchAll();
+            databaseConnexion::close();
+            return $items;
+            }
        
 }
