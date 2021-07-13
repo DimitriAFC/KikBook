@@ -66,25 +66,42 @@
                <?php foreach($publications as $publication):?>
                <div class="alert alert-primary" role="alert">
                   <div class="row">
-                     <div class="col-lg-8 col-md-8 col-sm-8">
+                     <div class="col-lg-10 col-md-10 col-sm-10">
                         <p><?= $_SESSION['user']->prenom ?> <?= $_SESSION['user']->nom ?>
                            <?= $publication->date_publication ?>
                         </p>
                         <p> <?= $publication->contenu ?></p>
-                     </div>
+                        <?php foreach($commentaires as $commentaire):?>
+                        <?php if($commentaire->id_publication == $publication->id_publication){
+                           
+                           if($_SESSION['user']->id_user == $commentaire->id_user){
+                              echo "<div class='alert alert-warning' role='alert'>
+                            $commentaire->nom $commentaire->prenom :
+                            $commentaire->contenu
+                           </div>";
+                           } else {
+                              echo "<div class='alert alert-warning' role='alert'>
+                            $commentaire->nom $commentaire->prenom :
+                            $commentaire->contenu
+                           </div>";
+                           }
 
-                     <div class="col-lg-4 col-md-4 col-sm-4">
+                        } ?>
 
-                     
-                        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modifier<?= $publication->id_publication ?>">
-                           <img src='public/images/eraser.png' class='d-inline-block align-top'
-                              style="height;20px; width:20px;" alt='update'>
+                        <?php endforeach;?>
+                     </div>   
+
+
+                     <div class="col-lg-2 col-md-2 col-sm-2">
+
+                        <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                           data-bs-target="#modifier<?= $publication->id_publication ?>">
                         </button>
 
 
                         <!-- Modal -->
-                        <div class="modal fade" id="modifier<?= $publication->id_publication ?>" tabindex="-1" aria-labelledby="Titre" role="dialog"
-                           aria-hidden="true">
+                        <div class="modal fade" id="modifier<?= $publication->id_publication ?>" tabindex="-1"
+                           aria-labelledby="Titre" role="dialog" aria-hidden="true">
                            <div class="modal-dialog">
                               <div class="modal-content">
                                  <div class="modal-header">
@@ -120,8 +137,6 @@
                         </div>
 
                         <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#supprimer">
-                           <img src='public/images/trash.png' class='d-inline-block align-top'
-                              style="height;20px; width:20px;" alt='delete'>
                         </button>
                         <!-- Modal -->
                         <div class="modal fade" id="supprimer" tabindex="-1" aria-labelledby="Titre" aria-hidden="true">
@@ -147,21 +162,26 @@
                         </div>
                      </div>
                   </div>
-                  <form action="<?= $path ?>/publication_commentaire" method="POST" class="">
+
+
+                  <form action="<?= $path ?>/insertCommentaire/<?= $publication->id_publication ?>" method="POST"
+                     class="">
                      <div class="form-group">
                         <div class="row">
-                           <div class="col-md-8">
-                              <input class="form-control" id="messagePublication" name="messagePublication"
-                                 placeholder="Laisser un commentaire" maxlength="255">
+                           <div class="col-md-10">
+                              <input class="form-control" id="commentaire" name="commentaire"
+                                 placeholder="Laisser un commentaire " maxlength="255">
                            </div>
-                           <div class="col-md-4">
+                           <div class="col-md-2">
                               <div class="text-center">
+                                 <button type="submit" class="btn btn-warning"></button>
                               </div>
                            </div>
                         </div>
                      </div>
                   </form>
-                  </p>
+
+
                </div>
                <?php endforeach;?>
             </div>

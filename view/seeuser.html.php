@@ -72,16 +72,22 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <?php if(isset($_SESSION['erreur'])){ ?>
+                <?php
+                if (isset($_SESSION["erreur"])) { ?>
                 <div class="alert alert-warning text-center">
-                    <?= $_SESSION['erreur'] ?>
+                    <?= $_SESSION["erreur"] ?>
                 </div>
-                <?php } unset($_SESSION['erreur']); ?>
-                <?php if(isset($_SESSION['succes'])){ ?>
+                <?php }
+                unset($_SESSION["erreur"]);
+                ?>
+                <?php
+                if (isset($_SESSION["succes"])) { ?>
                 <div class="alert alert-success text-center">
-                    <?= $_SESSION['succes'] ?>
+                    <?= $_SESSION["succes"] ?>
                 </div>
-                <?php } unset($_SESSION['succes'])?>
+                <?php }
+                unset($_SESSION["succes"]);
+                ?>
             </div>
         </div>
     </div>
@@ -93,57 +99,101 @@
             <div class="col-md-3">
                 <div class="jumbotron jumbotron-fluid">
                     <div class="container">
-                        <?php foreach($users as $user):?>
+                        <?php foreach ($users as $user): ?>
                         <h1 class="display-4 effet-degrade text-center">Son profil</h1>
-                        <p class="text-center"><?= $user->prenom?> <?= $user->nom?></p>
-                        <p class="text-center"><?= $user->email?></p>
-                        <p class="text-center"><?= $user->date_inscription?></p>
-                        <?php endforeach;?>
+                        <p class="text-center"><?= $user->prenom ?> <?= $user->nom ?></p>
+                        <p class="text-center"><?= $user->email ?></p>
+                        <p class="text-center"><?= $user->date_inscription ?></p>
+                        <?php endforeach; ?>
                     </div>
                 </div>
             </div>
             <!--------------->
             <!-- COLONNE 2 -->
             <!--------------->
-            <div class="col-md-4">
+            <div class="col-md-7">
                 <div class="jumbotron">
-                    <?php foreach($users as $user):?>
+                    <?php foreach ($users as $user): ?>
                     <h1 class="display-4 effet-degrade text-center" style="font-size:25px;">Publications de
-                        <?= $user->prenom ?> <?= $user->nom?> </h1>
-                    <?php endforeach;?>
-                    <?php foreach($elements as $element):?>
-                    <?php if($id_user === $element->id_user) {
+                        <?= $user->prenom ?> <?= $user->nom ?> </h1>
+                    <?php endforeach; ?>
+                    <?php foreach ($elements as $element): ?>
+                    <?php if ($id_user === $element->id_user) {
                         echo "     
                     <div class='alert alert-primary' role='alert'>
                         <div class='row'>
-                            <div class='col-lg-8 col-md-8 col-sm-8'>
-                                 <p>"  .$element->nom. ' ' .$element->prenom. "</p>
-                                 <p>Le "  .$element->date_publication. "</p>
-                                 <p>"  .$element->contenu. "</p>
+                            <div class='col-lg-12 col-md-12 col-sm-12'>
+                                 <p>" .
+                            $element->nom .
+                            " " .
+                            $element->prenom .
+                            "</p>
+                                 <p>Le " .
+                            $element->date_publication .
+                            "</p>
+                                 <p>" .
+                            $element->contenu .
+                            "</p>"; ?>
+                    <?php foreach (
+                                     $commentaires
+                                     as $commentaire
+                                 ): ?>
+                    <?php if (
+                            $commentaire->id_publication ==
+                            $element->id_publication
+                        ) {
+                            if (
+                                $_SESSION["user"]->id_user ==
+                                $commentaire->id_user
+                            ) {
+                                echo "<div class='alert alert-warning' role='alert'>
+                            $commentaire->nom $commentaire->prenom :
+                            $commentaire->contenu
+                           </div>";
+                            } else {
+                                echo "<div class='alert alert-danger' role='alert'>
+                            $commentaire->nom $commentaire->prenom :
+                            $commentaire->contenu
+                           </div>";
+                            }
+                        } ?>
+
+
+                    <?php endforeach; ?>
+                    <form action="<?= $path ?>/insertCommentaireProfil/<?= $element->id_publication ?>" method="POST"
+                        class="">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <input class="form-control" id="commentaire" name="commentaire"
+                                        placeholder="Laisser un commentaire " maxlength="255">
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="text-center">
+                                        <button type="submit" class="btn btn-warning"></button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>";
-                    } else {
-    
-                    }
-                    ?>
-                    <?php endforeach;?>
+                    </form>
                 </div>
             </div>
-            <!--------------->
-            <!-- COLONNE 3 -->
-            <!--------------->
-            <div class="col-md-3">
-            </div>
-            <!--------------->
-            <!-- COLONNE 4 -->
-            <!--------------->
-            <div class="col-md-2">
-            </div>
         </div>
+        <?php
+                    } else {
+                    } ?>
+        <?php endforeach; ?>
     </div>
-    <?php require "footer.html" ?>
+    </div>
+    <!--------------->
+    <!-- COLONNE 3 -->
+    <!--------------->
+    <div class="col-md-2">
+    </div>
+    </div>
+    </div>
+    <?php require "footer.html"; ?>
 </body>
-<?php require "script.html.php" ?>
+<?php require "script.html.php"; ?>
 
 </html>

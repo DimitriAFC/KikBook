@@ -19,6 +19,8 @@ class ProfilController
         $router->addRoute(new Route("/acceptFriends/{id}", "ProfilController", "acceptFriends"));
         $router->addRoute(new Route("/deletePublish/{id}", "ProfilController", "deletePublish"));
         $router->addRoute(new Route("/updatePublish/{id}", "ProfilController", "updatePublish"));
+        $router->addRoute(new Route("/insertCommentaire/{id}", "ProfilController", "insertCommentaire"));
+        $router->addRoute(new Route("/insertCommentaireProfil/{id}", "ProfilController", "insertCommentaireProfil"));
 
 
 
@@ -62,6 +64,7 @@ class ProfilController
         $users = User::getAllUser(); 
         $infos = Profil::getFriendInfosRepondant();
         $informations = Profil::getFriendInfosDemandeur();
+        $commentaires = Profil::getAllCommentaire();
 
         if(isset($_SESSION['user'])){
         View::setTemplate('profil');
@@ -69,6 +72,7 @@ class ProfilController
         View::bindVariable("publications", $publications);
         View::bindVariable("infos", $infos);
         View::bindVariable("informations", $informations);
+        View::bindVariable("commentaires", $commentaires);
         View::display();
         }else {
             $router = new Router();
@@ -147,7 +151,31 @@ class ProfilController
         $path = $router->getBasePath();
         header("location:{$path}/profil");
     }
-    
+
+    public static function insertCommentaire($id){
+        $contenu = $_POST['commentaire'];
+        $id_user = $_SESSION['user']->id_user;
+        $id_publication = $id;
+        Profil::insertCommentaire($contenu,$id_user,$id_publication);
+        $_SESSION['succes'] = "Commentaire ajouté avec succès !";
+        $router = new Router();
+        $path = $router->getBasePath();
+        header("location:{$path}/profil");
+       
+    }
+
+    public static function insertCommentaireProfil($id){
+        $contenu = $_POST['commentaire'];
+        $id_user = $_SESSION['user']->id_user;
+        $id_publication = $id;
+        $id_utilisateur = Profil::infosUtilisateurs($id_publication);
+        Profil::insertCommentaire($contenu,$id_user,$id_publication);
+        $_SESSION['succes'] = "Commentaire ajouté avec succès !";
+        $router = new Router();
+        $path = $router->getBasePath();
+        header("location:{$path}/seeuser/{$id_utilisateur->id_user}");
+       
+    }
 
 }
 

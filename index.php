@@ -32,7 +32,8 @@ $router->addRoute(new Route("/suppFriends/{*}", "ProfilController", "suppFriends
 $router->addRoute(new Route("/acceptFriends/{*}", "ProfilController", "acceptFriends"));
 $router->addRoute(new Route("/deletePublish/{*}", "ProfilController", "deletePublish"));
 $router->addRoute(new Route("/updatePublish/{*}", "ProfilController", "updatePublish"));
-
+$router->addRoute(new Route("/insertCommentaire/{*}", "ProfilController", "insertCommentaire"));
+$router->addRoute(new Route("/insertCommentaireProfil/{id}", "ProfilController", "insertCommentaireProfil"));
 
 
 

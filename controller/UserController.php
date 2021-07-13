@@ -267,9 +267,11 @@ class UserController
             $users = User::getUserProfil($id);
             $id_user = $id;
             $elements = Profil::getAllInfosUsers($id_user);
+            $commentaires = Profil::getAllCommentaire();
             View::bindVariable("users", $users);
             View::bindVariable("id_user", $id_user);
             View::bindVariable("elements", $elements);
+            View::bindVariable("commentaires", $commentaires);
             View::setTemplate('seeuser');
             View::display();
             }else {
