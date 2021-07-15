@@ -65,6 +65,7 @@ class ProfilController
         $infos = Profil::getFriendInfosRepondant();
         $informations = Profil::getFriendInfosDemandeur();
         $commentaires = Profil::getAllCommentaire();
+        $friends = Profil::listeFriend();
 
         if(isset($_SESSION['user'])){
         View::setTemplate('profil');
@@ -73,6 +74,7 @@ class ProfilController
         View::bindVariable("infos", $infos);
         View::bindVariable("informations", $informations);
         View::bindVariable("commentaires", $commentaires);
+        View::bindVariable("friends", $friends);
         View::display();
         }else {
             $router = new Router();
@@ -136,7 +138,7 @@ class ProfilController
     }
 
     public static function deletePublish($id_publication){
-        Profil::deletePublish($id_publication);
+        Profil::deletePublishAlone($id_publication);
         $_SESSION['succes'] = "Publication supprimé !";
         $router = new Router();
         $path = $router->getBasePath();

@@ -80,7 +80,7 @@
                             $commentaire->contenu
                            </div>";
                            } else {
-                              echo "<div class='alert alert-warning' role='alert'>
+                              echo "<div class='alert alert-danger' role='alert'>
                             $commentaire->nom $commentaire->prenom :
                             $commentaire->contenu
                            </div>";
@@ -89,6 +89,7 @@
                         } ?>
 
                         <?php endforeach;?>
+
                      </div>   
 
 
@@ -136,10 +137,10 @@
                            </div>
                         </div>
 
-                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#supprimer">
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#supprimer<?= $publication->id_publication ?>">
                         </button>
                         <!-- Modal -->
-                        <div class="modal fade" id="supprimer" tabindex="-1" aria-labelledby="Titre" aria-hidden="true">
+                        <div class="modal fade" id="supprimer<?= $publication->id_publication ?>" tabindex="-1" aria-labelledby="Titre" aria-hidden="true">
                            <div class="modal-dialog">
                               <div class="modal-content">
                                  <div class="modal-header">
@@ -162,6 +163,8 @@
                         </div>
                      </div>
                   </div>
+
+                  <!-- <?php var_dump($publications) ?> -->
 
 
                   <form action="<?= $path ?>/insertCommentaire/<?= $publication->id_publication ?>" method="POST"
@@ -251,19 +254,21 @@
                <div class="container">
                   <h6 class="display-4 effet-degrade text-center">Rechercher des amis</h6>
                   <?php foreach($users as $user):?>
-                  <?php if($user->id_user === $_SESSION['user']->id_user){
-                        echo"<div style='display:none;'></div>";
-                            } else {
-                                    echo"<div class='col text-center'>
+                     <?php if($user->id_user == $_SESSION['user']->id_user){
+                              echo"<div style='display:none;'></div>";
+                               } 
+                           elseif($user->id_user !== $_SESSION['user']->id_user) {
+                              echo"<div class='col text-center'>
                                     <div class='alert alert-primary' role='alert'>
                                     <div class='row'>
                                     <div class='col-md-6'>" .$user->nom. ' ' .$user->prenom. "</div>
                                     <div class='col-md-6'> <a class='btn btn-success' href='$path/addFriends/$user->id_user'>Ajouter</a></div>
                                     </div>
                                     </div>
-                                    </div>"
-                                            ;} ?>
-                  <?php endforeach;?>
+                                    </div>";
+                                 }
+                                 ?>
+                     <?php endforeach;?>
                </div>
             </div>
          </div>

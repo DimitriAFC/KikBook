@@ -35,10 +35,27 @@ class Profil {
     return $items;
     }
 
-    // Supprimer une publication
-    public static function deletePublish($id_publication){
+    // Supprimer une publication avec les commentaires
+    // public static function deletePublish($id_publication){
+    // $id_publication = (int)$id_publication;
+    // $dbh = databaseConnexion::open();
+    // $query = 
+    // "DELETE `commentaire_publication`, `publication` 
+    // FROM `publication` 
+    // INNER JOIN `commentaire_publication` 
+    // ON (publication.id_publication = commentaire_publication.id_publication) 
+    // WHERE publication.id_publication = :id_publication;";
+    // $sth = $dbh->prepare($query);
+    // $sth->bindParam(":id_publication",$id_publication);
+    // $sth -> execute();
+    // databaseConnexion::close();  
+    // }
+
+    // Supprimer une publication sans les commentaires
+    public static function deletePublishAlone($id_publication){
+    $id_publication = (int)$id_publication;
     $dbh = databaseConnexion::open();
-    $query = "DELETE FROM `publication` WHERE id_publication = :id_publication;";
+    $query = "DELETE FROM `publication` WHERE publication.id_publication = :id_publication;";
     $sth = $dbh->prepare($query);
     $sth->bindParam(":id_publication",$id_publication);
     $sth -> execute();
@@ -112,7 +129,7 @@ class Profil {
     $query = "SELECT a.id_relation, a.date_ajout, a.id_demandeur, a.id_repondant, a.acceptation, b.id_user, b.nom, b.prenom, b.email, b.date_naissance, b.genre, b.date_inscription
     FROM friend AS a JOIN user AS b ON (a.id_demandeur = b.id_user);";
     $sth = $dbh->prepare($query);
-    $sth->bindParam(":id_repondant", $id_repondant);
+    $sth->bindParam(":id_demandeur", $id_repondant);
     $sth->execute(array(
         'id_repondant' => $id_repondant));
     $sth->setFetchMode(PDO::FETCH_CLASS,"Kikbook\\model\\Profil");
@@ -121,8 +138,20 @@ class Profil {
     return $items;
     }
 
+    // Informations liste d'amis
+    public static function listeFriend(){
+    $dbh = databaseConnexion::open();
+    $query = "SELECT * FROM `friend`;";
+    $sth = $dbh->prepare($query);
+    $sth->execute();
+    $sth->setFetchMode(PDO::FETCH_CLASS,"Kikbook\\model\\Profil");
+    $items = $sth->fetchAll();
+    databaseConnexion::close();
+    return $items;
+    }
+
     // Accepter des demandes d'amis
-    public static function  acceptFriends($id_repondant){
+    public static function acceptFriends($id_repondant){
     $dbh = databaseConnexion::open();
     $query = "UPDATE `friend` SET`acceptation`= 1 WHERE `id_repondant` = :id_repondant ";
     $sth = $dbh->prepare($query);
@@ -152,7 +181,7 @@ class Profil {
     return $items;
     }
 
-    // Ajouter des commentaires sur les publications
+    // Ajouter des commentaires sur les publications de son profil
     public static function insertCommentaire($contenu,$id_user, $id_publication){
     $id_user = (int) $id_user;
     $id_publication = (int) $id_publication;
@@ -168,7 +197,7 @@ class Profil {
     databaseConnexion::close();
     }
 
-    // Ajouter des commentaires sur les publications
+    // Ajouter des commentaires sur les publications des autres profils
     public static function insertCommentaireProfil($contenu,$id_user, $id_publication){
     $id_user = (int) $id_user;
     $id_publication = (int) $id_publication;
@@ -184,7 +213,7 @@ class Profil {
     databaseConnexion::close();
     }
 
-    // Afficher les commentaires
+    //Afficher les commentaires
     public static function getAllCommentaire(){
     $dbh = databaseConnexion::open();
     $query = "SELECT a.id_commentaire, a.contenu, a.date_publication, a.id_user, a.id_publication, b.nom, b.prenom
