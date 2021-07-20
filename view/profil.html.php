@@ -194,7 +194,7 @@
                      </div>
                   </div>
 
-                  <!-- <?php var_dump($publications) ?> -->
+
 
 
                   <form action="<?= $path ?>/insertCommentaire/<?= $publication->id_publication ?>" method="POST"
@@ -269,8 +269,6 @@
                             </div>
                             </div>";
                             }
-                            }
-                            else{
                             } ?>
                   <?php endforeach;?>
                   <div class="text-center">
@@ -284,19 +282,33 @@
                <div class="container">
                   <h6 class="display-4 effet-degrade text-center">Rechercher des amis</h6>
                   <?php foreach($users as $user):?>
-                     <?php if($user->id_user == $_SESSION['user']->id_user){
-                              echo"<div style='display:none;'></div>";
-                               } 
-                           elseif($user->id_user !== $_SESSION['user']->id_user) {
-                              echo"<div class='col text-center'>
-                                    <div class='alert alert-primary' role='alert'>
-                                    <div class='row'>
-                                    <div class='col-md-6'>" .$user->nom. ' ' .$user->prenom. "</div>
-                                    <div class='col-md-6'> <a class='btn btn-success' href='$path/addFriends/$user->id_user'>Ajouter</a></div>
-                                    </div>
-                                    </div>
-                                    </div>";
-                                 }
+                     <?php if($user->id_user !== $_SESSION['user']->id_user)
+                     {
+                        $verification = "Non";
+                        foreach($infos as $info)
+                        {
+                           if($user->id_user !== $info->id_user)
+                           {
+                           
+                           } else 
+                           {
+                              $verification ="Oui";
+                           }
+                        }
+                     } else {
+                        $verification = "Oui";
+                     }
+                     if($verification === "Non"){
+                        echo"<div class='col text-center'>
+                        <div class='alert alert-primary' role='alert'>
+                        <div class='row'>
+                        <div class='col-md-6'>" .$user->nom. ' ' .$user->prenom. "</div>
+                        <div class='col-md-6'> <a class='btn btn-success' href='$path/addFriends/$user->id_user'>Ajouter</a></div>
+                        </div>
+                        </div>
+                        </div>";
+                     }
+
                                  ?>
                      <?php endforeach;?>
                </div>
