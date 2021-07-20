@@ -76,9 +76,39 @@
                            
                            if($_SESSION['user']->id_user == $commentaire->id_user){
                               echo "<div class='alert alert-warning' role='alert'>
+                              <div class='row'>
+                              <div class='col-lg-10 col-md-10 col-sm-10'>
                             $commentaire->nom $commentaire->prenom :
                             $commentaire->contenu
-                           </div>";
+                           </div>
+                           <div class='col-lg-2 col-md-2 col-sm-2'> 
+                           <button type='button' class='btn btn-danger' data-bs-toggle='modal' data-bs-target='#commentaire$commentaire->id_commentaire'>
+                           </button>
+                           <!-- Modal -->
+                           <div class='modal fade' id='commentaire$commentaire->id_commentaire' tabindex='-1' aria-labelledby='Titre' aria-hidden='true'>
+                              <div class='modal-dialog'>
+                                 <div class='modal-content'>
+                                    <div class='modal-header'>
+                                       <h5 class='modal-title' id='Titre'>Supprimer mon commentaire</h5>
+                                       <button type='button' class='btn-close' data-bs-dismiss='modal'
+                                          aria-label='Close'></button>
+                                    </div>
+                                    <div class='modal-body'>
+                                       Etes vous certain(e) de vouloir supprimer ce commentaire ?
+                                    </div>
+                                    <div class='modal-footer'>
+                                       <button type='button' class='btn btn-success'
+                                          data-bs-dismiss='modal'>Annuler</button>
+                                       <a href='$path/deleteCommentaire/$commentaire->id_commentaire'
+                                          class='btn-inscription'>
+                                          <button type='button' class='btn btn-danger'>Supprimer</button></a>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                              </div>
+                                 </div>";
                            } else {
                               echo "<div class='alert alert-danger' role='alert'>
                             $commentaire->nom $commentaire->prenom :
@@ -222,7 +252,7 @@
                             }
                             else{
                             } ?>
-                  <!-- <?php var_dump($infos)?> -->
+                 
                   <?php endforeach;?>
                   <?php foreach($informations as $info):?>
                   <?php if($info->acceptation == 1){

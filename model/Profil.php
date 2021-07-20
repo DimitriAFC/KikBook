@@ -35,24 +35,8 @@ class Profil {
     return $items;
     }
 
-    // Supprimer une publication avec les commentaires
-    // public static function deletePublish($id_publication){
-    // $id_publication = (int)$id_publication;
-    // $dbh = databaseConnexion::open();
-    // $query = 
-    // "DELETE `commentaire_publication`, `publication` 
-    // FROM `publication` 
-    // INNER JOIN `commentaire_publication` 
-    // ON (publication.id_publication = commentaire_publication.id_publication) 
-    // WHERE publication.id_publication = :id_publication;";
-    // $sth = $dbh->prepare($query);
-    // $sth->bindParam(":id_publication",$id_publication);
-    // $sth -> execute();
-    // databaseConnexion::close();  
-    // }
-
-    // Supprimer une publication sans les commentaires
-    public static function deletePublishAlone($id_publication){
+    // Supprimer une publication 
+    public static function deletePublish($id_publication){
     $id_publication = (int)$id_publication;
     $dbh = databaseConnexion::open();
     $query = "DELETE FROM `publication` WHERE publication.id_publication = :id_publication;";
@@ -167,10 +151,11 @@ class Profil {
     // Avoir les informations des amis
     public static function getAllInfosUsers($id_user){
     $dbh = databaseConnexion::open();
-    $query = "SELECT a.id_user, a.nom, a.prenom, a.email, a.date_naissance, a.genre, a.date_inscription, b.id_publication, b.contenu, b.date_publication
+    $query = "SELECT a.id_user, a.nom, a.prenom, a.email, a.date_naissance, a.genre, a.date_inscription, b.id_publication, b.contenu, b.date_publication, b.id_user AS id_user_publication
     FROM user AS a 
     JOIN publication AS b
-    WHERE (a.id_user = b.id_user);";
+    ON (a.id_user = b.id_user)
+    WHERE a.id_user = :id_user;";
     $sth = $dbh->prepare($query);
     $sth->bindParam(":id_user", $id_user);
     $sth -> execute(array(
@@ -226,7 +211,7 @@ class Profil {
     return $items;
     }
 
-    // Récuupéré l'id du profil utilisateur
+    // Récupéré l'id du profil utilisateur
     public static function infosUtilisateurs($id_publication){
     $id_publication = (int)$id_publication;
     $dbh = databaseConnexion::open();
@@ -238,6 +223,17 @@ class Profil {
     $items = $sth->fetch();
     databaseConnexion::close();
     return $items;
+    }
+
+    // Supprimer ses commentaires 
+    public static function deleteCommentaire($id_commentaire){
+    $id_commentaire = (int)$id_commentaire;
+    $dbh = databaseConnexion::open();
+    $query = "DELETE FROM `commentaire_publication` WHERE id_commentaire = :id_commentaire;";
+    $sth = $dbh->prepare($query);
+    $sth->bindParam(":id_commentaire",$id_commentaire);
+    $sth -> execute();
+    databaseConnexion::close();  
     }
     
     }

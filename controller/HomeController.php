@@ -5,11 +5,9 @@ use Kikbook\Route;
 use Kikbook\Router;
 use Kikbook\View;
 
-class HomeController
-{
+class HomeController{
 
-    public static function route()
-    {
+    public static function route(){
         $router = new Router();
         $router->addRoute(new Route("/", "HomeController", "home"));
         $router->addRoute(new Route("/news", "HomeController", "news"));
@@ -26,29 +24,28 @@ class HomeController
         }
     }
 
-    public static function home()
-    {
-        if(isset($_SESSION['user'])){
+    function redirection(){
+        if($_SESSION['user']){
             $router = new Router();
             $path = $router->getBasePath();
-            header("location: {$path}/profil");
+            header("location:{$path}/profil");
+            return;
+        } else {
+            $router = new Router();
+            $path = $router->getBasePath();
+            header("location:{$path}/");
+            return;
         }
-        else{
-        View::setTemplate('home');
-        View::display();
-    }
     }
 
-    public static function news()
-    {
-        if(isset($_SESSION['user'])){
-            View::setTemplate('news');
-            View::display();
-            }else {
-                $router = new Router();
-                $path = $router->getBasePath();
-                header("location: {$path}/");
-            }
+    public static function home(){
+    View::setTemplate('home');
+    View::display();
+    }
+
+    public static function news(){
+    View::setTemplate('news');
+    View::display();
     }
 }
 

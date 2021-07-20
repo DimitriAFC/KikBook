@@ -38,73 +38,44 @@ class UserController
         }
     }
 
-    public static function register()
-    {
-        if(isset($_SESSION['user'])){
-            header("location: {$path}/Kikbook/profil");
-        }else {
-        View::setTemplate('register');
-        View::display();
-}
+    public static function register(){
+    View::setTemplate('register');
+    View::display();
     }
 
     // Fonction inscription de l'utilisateur
     public static function inscription()
     {
-        if (empty($_POST['nom']))
-        {
+        if(empty($_POST['nom'])){
             $_SESSION['erreur'] = "Merci de renseigner un nom.";
-            $router = new Router();
-            $path = $router->getBasePath();
-            header("location:{$path}/register");
+            header("Location: ".$_SERVER['HTTP_REFERER']."");
         }
-        else
-        {
-            if (empty($_POST['prenom']))
-            {
+        else {
+            if(empty($_POST['prenom'])){
                 $_SESSION['erreur'] = "Merci de renseigner un prénom.";
-                $router = new Router();
-                $path = $router->getBasePath();
-                header("location:{$path}/register");
+                header("Location: ".$_SERVER['HTTP_REFERER']."");
             }
-            else
-            {
-                if (empty($_POST['email']))
-                {
+            else {
+                if(empty($_POST['email'])){
                     $_SESSION['erreur'] = "Merci de renseigner un e-mail.";
-                    $router = new Router();
-                    $path = $router->getBasePath();
-                    header("location:{$path}/register");
+                    header("Location: ".$_SERVER['HTTP_REFERER']."");
                 }
-                else
-                {
-                    if (empty($_POST['password']))
-                    {
+                else {
+                    if(empty($_POST['password'])){
                         $_SESSION['erreur'] = "Merci de renseigner un mot de passe.";
-                        $router = new Router();
-                        $path = $router->getBasePath();
-                        header("location:{$path}/register");
+                        header("Location: ".$_SERVER['HTTP_REFERER']."");
                     }
-                    else
-                    {
-                        if (empty($_POST['date_naissance']))
-                        {
+                    else {
+                        if(empty($_POST['date_naissance'])){
                             $_SESSION['erreur'] = "Merci de renseigner une date de naissance.";
-                            $router = new Router();
-                            $path = $router->getBasePath();
-                            header("location:{$path}/register");
+                            header("Location: ".$_SERVER['HTTP_REFERER']."");
                         }
-                        else
-                        {
-                            if (empty($_POST['genre']))
-                            {
+                        else {
+                            if (empty($_POST['genre'])){
                                 $_SESSION['erreur'] = "Merci de renseigner votre genre.";
-                                $router = new Router();
-                                $path = $router->getBasePath();
-                                header("location:{$path}/register");
+                                header("Location: ".$_SERVER['HTTP_REFERER']."");
                             }
-                            else
-                            {
+                            else {
                                 $user = new User;
                                 $user->nom = $_POST['nom'];
                                 $user->prenom = $_POST['prenom'];
@@ -131,22 +102,17 @@ class UserController
     }
 
     // Fonction connexion de l'utilisateur
-    public static function connexion()
-    {
-        if (empty($_POST['email']))
-        {
+    public static function connexion(){
+        if (empty($_POST['email'])){
             $_SESSION['erreur'] = "Merci de renseigner un mail valide.";
             header("location:{$path}/KikBook");
         }
-        else
-        {
-            if (empty($_POST['password']))
-            {
-                $_SESSION['erreur'] = "Merci de saisir un mot de passe.";
-                header("location:{$path}/KikBook");
+        else {
+            if(empty($_POST['password'])){
+            $_SESSION['erreur'] = "Merci de saisir un mot de passe.";
+            header("location:{$path}/KikBook");
             }
-            else
-            {
+            else {
 
                 $email = $_POST['email'];
                 $password = $_POST['password'];
@@ -154,15 +120,13 @@ class UserController
 
                 $user = $users->connexion($email, $password);
 
-                if ($user != null)
-                {
+                if($user != null){
                     $_SESSION['user'] = $user;
                     $router = new Router();
                     $path = $router->getBasePath();
                     header("location: {$path}/profil");
                 }
-                else
-                {
+                else {
                     $_SESSION['erreur'] = "L'email ou le mot de passe ne sont pas valide.";
                     unset($_SESSION['user']);
                     $router = new Router();
@@ -173,128 +137,87 @@ class UserController
         }
     }
 
-    public static function profil()
-    {
-        View::setTemplate('profil');
-        View::display();
+    public static function profil(){
+    View::setTemplate('profil');
+    View::display();
     }
-
-    public static function password()
-    {
-        if(isset($_SESSION['user'])){
-            View::setTemplate('password');
-            View::display();
-            }else {
-                $router = new Router();
-                $path = $router->getBasePath();
-                header("location: {$path}/");
-            }
-    }
-
+  
     // Fonction de déconnexion de l'utilisateur
-    public static function off()
-    {
-        unset($_SESSION['user']);
-
-        $router = new Router();
-        $path = $router->getBasePath();
-        header("location:{$path}/");
+    public static function off(){
+    unset($_SESSION['user']);
+    $router = new Router();
+    $path = $router->getBasePath();
+    header("location:{$path}/");
     }
 
-    public static function account()
-    {
-        if(isset($_SESSION['user'])){
-        View::setTemplate('account');
-        View::display();
-            }else {
-                $router = new Router();
-                $path = $router->getBasePath();
-                header("location: {$path}/");
-            }
-        
-
+    public static function account(){
+    View::setTemplate('account');
+    View::display();
     }
 
-    public static function updateProfil()
-    {
+    public static function updateProfil(){
+    $user = new User;
+    $user->id_user = $_SESSION['user']->id_user;
+    $user->nom = $_POST['nom'];
+    $user->prenom = $_POST['prenom'];
+    $user->email = $_POST['email'];
+    $user->password = $_SESSION['user']->password;
+    $user->date_naissance = $_POST['date_naissance'];
+    $user->genre = $_POST['genre'];
+    $user->updateProfil();
+
+    $loginUser = new User;
+
+    $_SESSION['user'] = $loginUser->connexion($user->email, $user->password);
+    $_SESSION['succes'] = "Profil mise à jour !";
+    header("Location: ".$_SERVER['HTTP_REFERER']."");
+    }
+
+    public static function updatePassword(){
+    if($_POST['password'] === $_POST['newPassword'])
+        {
         $user = new User;
         $user->id_user = $_SESSION['user']->id_user;
-        $user->nom = $_POST['nom'];
-        $user->prenom = $_POST['prenom'];
-        $user->email = $_POST['email'];
-        $user->password = $_SESSION['user']->password;
-        $user->date_naissance = $_POST['date_naissance'];
-        $user->genre = $_POST['genre'];
-        $user->updateProfil();
-
+        $user->email = $_SESSION['user']->email;
+        $user->password = $_POST['password'];
+        $user->updatePassword();
         $loginUser = new User;
 
         $_SESSION['user'] = $loginUser->connexion($user->email, $user->password);
-        $_SESSION['succes'] = "Profil mise à jour !";
-
-        $router = new Router();
-        $path = $router->getBasePath();
-        header("location: {$path}/account");
-    }
-
-    public static function updatePassword()
-    {
-        if ($_POST['password'] === $_POST['newPassword'])
-        {
-            $user = new User;
-            $user->id_user = $_SESSION['user']->id_user;
-            $user->email = $_SESSION['user']->email;
-            $user->password = $_POST['password'];
-            $user->updatePassword();
-            $loginUser = new User;
-
-            $_SESSION['user'] = $loginUser->connexion($user->email, $user->password);
-            $_SESSION['succes'] = "Mot de passe mise à jour !";
-
-            $router = new Router();
-            $path = $router->getBasePath();
-            header("location: {$path}/password");
+        $_SESSION['succes'] = "Mot de passe mise à jour !";
+        header("Location: ".$_SERVER['HTTP_REFERER']."");
         }
-        else
-        {
-            echo 'PAS BON';
+    else{
+        $_SESSION['erreur'] = "Les mots de passe ne sont pas identique !";
+        header("Location: ".$_SERVER['HTTP_REFERER']."");
         }
     }
 
-    public static function seeuser($id)
-    {
-        if(isset($_SESSION['user'])){
-            $users = User::getUserProfil($id);
-            $id_user = $id;
-            $elements = Profil::getAllInfosUsers($id_user);
-            $commentaires = Profil::getAllCommentaire();
-            View::bindVariable("users", $users);
-            View::bindVariable("id_user", $id_user);
-            View::bindVariable("elements", $elements);
-            View::bindVariable("commentaires", $commentaires);
-            View::setTemplate('seeuser');
-            View::display();
-            }else {
-                $router = new Router();
-                $path = $router->getBasePath();
-                header("location: {$path}/");
-            }
+    public static function seeuser($id){
+    $users = User::getUserProfil($id);
+    $id_user = $id;
+    $elements = Profil::getAllInfosUsers($id_user);
+    $commentaires = Profil::getAllCommentaire();
+    View::bindVariable("users", $users);
+    View::bindVariable("id_user", $id_user);
+    View::bindVariable("elements", $elements);
+    View::bindVariable("commentaires", $commentaires);
+    View::setTemplate('seeuser');
+    View::display();
     }
 
-    public static function requestfriends()
-    {
-        if(isset($_SESSION['user'])){
-            $id_repondant = $_SESSION['user']->id_user;
-            $requests = Profil::friendRequest($id_repondant);
-            View::bindVariable("id_repondant", $id_repondant);
-            View::bindVariable("requests", $requests);
-            View::setTemplate('requestfriends');
-            View::display();
-            }else {
-                $router = new Router();
-                $path = $router->getBasePath();
-                header("location: {$path}/");
-            }
+    public static function requestfriends(){
+    $id_repondant = $_SESSION['user']->id_user;
+    $requests = Profil::friendRequest($id_repondant);
+    View::bindVariable("id_repondant", $id_repondant);
+    View::bindVariable("requests", $requests);
+    View::setTemplate('requestfriends');
+    View::display();
     }
-}
+
+    public static function password(){
+    View::setTemplate('password');
+    View::display();
+    }
+    }
 

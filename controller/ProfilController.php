@@ -21,8 +21,7 @@ class ProfilController
         $router->addRoute(new Route("/updatePublish/{id}", "ProfilController", "updatePublish"));
         $router->addRoute(new Route("/insertCommentaire/{id}", "ProfilController", "insertCommentaire"));
         $router->addRoute(new Route("/insertCommentaireProfil/{id}", "ProfilController", "insertCommentaireProfil"));
-
-
+        $router->addRoute(new Route("/deleteCommentaire/{id}", "ProfilController", "deleteCommentaire"));        
 
         $route = $router->findRoute();
         if ($route)
@@ -36,14 +35,10 @@ class ProfilController
     }
 
      // Fonction publication de l'utilisateur
-     public static function publication_profil()
-     {
-        if (empty($_POST['messagePublication']))
-        {
+     public static function publication_profil(){
+        if (empty($_POST['messagePublication'])){
             $_SESSION['erreur'] = "Votre message est vide";
-            $router = new Router();
-            $path = $router->getBasePath();
-            header("location:{$path}/profil");
+            header("Location: ".$_SERVER['HTTP_REFERER']."");
         } else {
             $publish = new Profil;
             $publish->id_user = $_SESSION['user']->id_user;
@@ -51,133 +46,110 @@ class ProfilController
             Profil::publier($publish);
 
             $_SESSION['succes'] = "Message posté avec succès !";
-            $router = new Router();
-            $path = $router->getBasePath();
-            header("location:{$path}/profil");
+            header("Location: ".$_SERVER['HTTP_REFERER']."");
         }
      }
 
-     // Fonction chercher les publication de l'utilisateur
-     public static function profil(){
-        $id_user =  $_SESSION['user']->id_user;
-        $publications = Profil::getAllPublish($id_user);
-        $users = User::getAllUser(); 
-        $infos = Profil::getFriendInfosRepondant();
-        $informations = Profil::getFriendInfosDemandeur();
-        $commentaires = Profil::getAllCommentaire();
-        $friends = Profil::listeFriend();
+    // Fonction chercher les publication de l'utilisateur
+    public static function profil(){
+    $id_user =  $_SESSION['user']->id_user;
+    $publications = Profil::getAllPublish($id_user);
+    $users = User::getAllUser(); 
+    $infos = Profil::getFriendInfosRepondant();
+    $informations = Profil::getFriendInfosDemandeur();
+    $commentaires = Profil::getAllCommentaire();
+    $friends = Profil::listeFriend();
 
-        if(isset($_SESSION['user'])){
-        View::setTemplate('profil');
-        View::bindVariable("users", $users);
-        View::bindVariable("publications", $publications);
-        View::bindVariable("infos", $infos);
-        View::bindVariable("informations", $informations);
-        View::bindVariable("commentaires", $commentaires);
-        View::bindVariable("friends", $friends);
-        View::display();
-        }else {
-            $router = new Router();
-            $path = $router->getBasePath();
-            header("location: {$path}/");
-        }
+    View::setTemplate('profil');
+    View::bindVariable("users", $users);
+    View::bindVariable("publications", $publications);
+    View::bindVariable("infos", $infos);
+    View::bindVariable("informations", $informations);
+    View::bindVariable("commentaires", $commentaires);
+    View::bindVariable("friends", $friends);
+    View::display();
     }
 
-    public static function friends()
-    {
-        if(isset($_SESSION['user'])){
-                $id_user =  $_SESSION['user']->id_user;
-                $infos = Profil::getFriendInfosRepondant();
-                $informations = Profil::getFriendInfosDemandeur();
-                View::setTemplate('friends');
-                View::bindVariable("infos", $infos);
-                View::bindVariable("informations", $informations);
-                View::display();
-                
-        } else{
-                $router = new Router();
-                $path = $router->getBasePath();
-                header("location: {$path}/");
-              }
+    public static function friends(){
+    $id_user =  $_SESSION['user']->id_user;
+    $infos = Profil::getFriendInfosRepondant();
+    $informations = Profil::getFriendInfosDemandeur();
+    View::setTemplate('friends');
+    View::bindVariable("infos", $infos);
+    View::bindVariable("informations", $informations);
+    View::display();
     }
-
-   
 
     public static function addFriends($id){
-        $id_repondant = $id;
-        $id_demandeur = $_SESSION['user']->id_user;
-        $acceptation = 0;
-        Profil::addFriends($id_demandeur,$id_repondant,$acceptation);
-        View::bindVariable("id_repondant", $id_repondant);
-        View::bindVariable("id_demandeur", $id_demandeur);
-        View::bindVariable("acceptation", $acceptation);
-        $_SESSION['succes'] = "Votre demande à été envoyé !";
-        $router = new Router();
-        $path = $router->getBasePath();
-        header("location:{$path}/profil");
+    $id_repondant = $id;
+    $id_demandeur = $_SESSION['user']->id_user;
+    $acceptation = 0;
+    Profil::addFriends($id_demandeur,$id_repondant,$acceptation);
+    View::bindVariable("id_repondant", $id_repondant);
+    View::bindVariable("id_demandeur", $id_demandeur);
+    View::bindVariable("acceptation", $acceptation);
+    $_SESSION['succes'] = "Votre demande à été envoyé !";
+    header("Location: ".$_SERVER['HTTP_REFERER']."");
     }
 
     public static function acceptFriends(){
-        $id_repondant = $_SESSION['user']->id_user;
-        Profil::acceptFriends($id_repondant);
-        View::bindVariable("id_repondant", $id_repondant);
-        $_SESSION['succes'] = "Invitation accepté !";
-        $router = new Router();
-        $path = $router->getBasePath();
-        header("location:{$path}/requestfriends");
+    $id_repondant = $_SESSION['user']->id_user;
+    Profil::acceptFriends($id_repondant);
+    View::bindVariable("id_repondant", $id_repondant);
+    $_SESSION['succes'] = "Invitation accepté !";
+    header("Location: ".$_SERVER['HTTP_REFERER']."");
     }
 
     public static function suppFriends($id){
-        $id_relation = $id;
-        Profil::suppFriends($id);
-        View::bindVariable("id_relation", $id_relation);
-        $_SESSION['succes'] = "Amis retiré de votre liste !";
-        $router = new Router();
-        $path = $router->getBasePath();
-        header("location:{$path}/friends");
+    $id_relation = $id;
+    Profil::suppFriends($id);
+    View::bindVariable("id_relation", $id_relation);
+    $_SESSION['succes'] = "Amis retiré de votre liste !";
+    header("Location: ".$_SERVER['HTTP_REFERER']."");
     }
 
     public static function deletePublish($id_publication){
-        Profil::deletePublishAlone($id_publication);
-        $_SESSION['succes'] = "Publication supprimé !";
-        $router = new Router();
-        $path = $router->getBasePath();
-        header("location:{$path}/profil");
+    Profil::deletePublish($id_publication);
+    $_SESSION['succes'] = "Publication supprimé !";
+    header("Location: ".$_SERVER['HTTP_REFERER']."");
     }
 
     public static function updatePublish($id_publication){ 
-        $contenu = $_POST['messageModifier'];
-        Profil::updatePublish($id_publication, $contenu);
-        $_SESSION['succes'] = "Publication modifié !";
-        $router = new Router();
-        $path = $router->getBasePath();
-        header("location:{$path}/profil");
+    $contenu = $_POST['messageModifier'];
+    Profil::updatePublish($id_publication, $contenu);
+    $_SESSION['succes'] = "Publication modifié !";
+    header("Location: ".$_SERVER['HTTP_REFERER']."");
     }
 
     public static function insertCommentaire($id){
-        $contenu = $_POST['commentaire'];
-        $id_user = $_SESSION['user']->id_user;
-        $id_publication = $id;
-        Profil::insertCommentaire($contenu,$id_user,$id_publication);
-        $_SESSION['succes'] = "Commentaire ajouté avec succès !";
-        $router = new Router();
-        $path = $router->getBasePath();
-        header("location:{$path}/profil");
-       
+    $contenu = $_POST['commentaire'];
+    $id_user = $_SESSION['user']->id_user;
+    $id_publication = $id;
+    Profil::insertCommentaire($contenu,$id_user,$id_publication);
+    $_SESSION['succes'] = "Commentaire ajouté avec succès !";
+    header("Location: ".$_SERVER['HTTP_REFERER']."");
     }
 
     public static function insertCommentaireProfil($id){
-        $contenu = $_POST['commentaire'];
-        $id_user = $_SESSION['user']->id_user;
-        $id_publication = $id;
-        $id_utilisateur = Profil::infosUtilisateurs($id_publication);
-        Profil::insertCommentaire($contenu,$id_user,$id_publication);
-        $_SESSION['succes'] = "Commentaire ajouté avec succès !";
-        $router = new Router();
-        $path = $router->getBasePath();
-        header("location:{$path}/seeuser/{$id_utilisateur->id_user}");
-       
+    $contenu = $_POST['commentaire'];
+    $id_user = $_SESSION['user']->id_user;
+    $id_publication = $id;
+    $id_utilisateur = Profil::infosUtilisateurs($id_publication);  
+
+    if(empty($_POST['commentaire'])){
+    $_SESSION['erreur'] = "Votre message est vide";
+    header("Location: ".$_SERVER['HTTP_REFERER']."");
+    } else {
+    Profil::insertCommentaire($contenu,$id_user,$id_publication);
+    $_SESSION['succes'] = "Commentaire ajouté avec succès !";
+    header("Location: ".$_SERVER['HTTP_REFERER']."");
+    }
     }
 
+    public static function deleteCommentaire($id_commentaire){
+    Profil::deleteCommentaire($id_commentaire);
+    $_SESSION['succes'] = "Commentaire supprimé !";
+    header("Location: ".$_SERVER['HTTP_REFERER']."");
+    }
 }
 

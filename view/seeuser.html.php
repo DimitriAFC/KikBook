@@ -118,48 +118,63 @@
                         <?= $user->prenom ?> <?= $user->nom ?> </h1>
                     <?php endforeach; ?>
                     <?php foreach ($elements as $element): ?>
-                    <?php if ($id_user === $element->id_user) {
+                    <?php if ($id_user == $element->id_user_publication) {
                         echo "     
                     <div class='alert alert-primary' role='alert'>
                         <div class='row'>
                             <div class='col-lg-12 col-md-12 col-sm-12'>
-                                 <p>" .
-                            $element->nom .
-                            " " .
-                            $element->prenom .
-                            "</p>
-                                 <p>Le " .
-                            $element->date_publication .
-                            "</p>
-                                 <p>" .
-                            $element->contenu .
-                            "</p>"; ?>
-                    <?php foreach (
-                                     $commentaires
-                                     as $commentaire
-                                 ): ?>
-                    <?php if (
-                            $commentaire->id_publication ==
-                            $element->id_publication
-                        ) {
-                            if (
-                                $_SESSION["user"]->id_user ==
-                                $commentaire->id_user
-                            ) {
+                                 <p>" .$element->nom ." " .$element->prenom ."</p>
+                                 <p>Le " .$element->date_publication ."</p>
+                                 <p>" .$element->contenu ."</p>"; ?>
+
+
+                    <?php foreach ($commentaires as $commentaire): ?>
+                    <?php if ($commentaire->id_publication == $element->id_publication) {
+                            if ($_SESSION["user"]->id_user == $commentaire->id_user) {
                                 echo "<div class='alert alert-warning' role='alert'>
-                            $commentaire->nom $commentaire->prenom :
-                            $commentaire->contenu
-                           </div>";
+                                <div class='row'>
+                                <div class='col-lg-10 col-md-10 col-sm-10'>
+                              $commentaire->nom $commentaire->prenom :
+                              $commentaire->contenu
+                             </div>
+                             <div class='col-lg-2 col-md-2 col-sm-2'> 
+                             <button type='button' class='btn btn-danger' data-bs-toggle='modal' data-bs-target='#commentaire$commentaire->id_commentaire'>
+                             </button>
+                             <!-- Modal -->
+                             <div class='modal fade' id='commentaire$commentaire->id_commentaire' tabindex='-1' aria-labelledby='Titre' aria-hidden='true'>
+                                <div class='modal-dialog'>
+                                   <div class='modal-content'>
+                                      <div class='modal-header'>
+                                         <h5 class='modal-title' id='Titre'>Supprimer mon commentaire</h5>
+                                         <button type='button' class='btn-close' data-bs-dismiss='modal'
+                                            aria-label='Close'></button>
+                                      </div>
+                                      <div class='modal-body'>
+                                         Etes vous certain(e) de vouloir supprimer ce commentaire ?
+                                      </div>
+                                      <div class='modal-footer'>
+                                         <button type='button' class='btn btn-success'
+                                            data-bs-dismiss='modal'>Annuler</button>
+                                         <a href='$path/deleteCommentaire/$commentaire->id_commentaire'
+                                            class='btn-inscription'>
+                                            <button type='button' class='btn btn-danger'>Supprimer</button></a>
+                                      </div>
+                                   </div>
+                                </div>
+                             </div>
+                          </div>
+                                </div>
+                                   </div>";
                             } else {
                                 echo "<div class='alert alert-danger' role='alert'>
                             $commentaire->nom $commentaire->prenom :
                             $commentaire->contenu
                            </div>";
                             }
-                        } ?>
-
-
+                        }  ?>
                     <?php endforeach; ?>
+
+                    
                     <form action="<?= $path ?>/insertCommentaireProfil/<?= $element->id_publication ?>" method="POST"
                         class="">
                         <div class="form-group">
@@ -179,9 +194,11 @@
                 </div>
             </div>
         </div>
-        <?php
-                    } else {
-                    } ?>
+        <?php   } else{
+            echo "<div class='alert alert-danger' role='alert'>
+            <p>GLA</p>
+           </div>";
+        }  ?>
         <?php endforeach; ?>
     </div>
     </div>
@@ -194,6 +211,7 @@
     </div>
     <?php require "footer.html"; ?>
 </body>
-<?php require "script.html.php"; ?>
+<script src="../vendor/components/jquery/jquery.min.js"></script>
+<script src="../vendor/twbs/bootstrap/dist/js/bootstrap.min.js"></script>
 
 </html>

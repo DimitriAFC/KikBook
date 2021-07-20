@@ -34,6 +34,7 @@ $router->addRoute(new Route("/deletePublish/{*}", "ProfilController", "deletePub
 $router->addRoute(new Route("/updatePublish/{*}", "ProfilController", "updatePublish"));
 $router->addRoute(new Route("/insertCommentaire/{*}", "ProfilController", "insertCommentaire"));
 $router->addRoute(new Route("/insertCommentaireProfil/{id}", "ProfilController", "insertCommentaireProfil"));
+$router->addRoute(new Route("/deleteCommentaire/{id}", "ProfilController", "deleteCommentaire"));
 
 
 
