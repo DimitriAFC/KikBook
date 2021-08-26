@@ -9,7 +9,7 @@
             <div class="col-md-4">
             </div>
             <div class="col-md-4">
-                <p class="text-center texte-accueil">Rester en contact avec vos collègues de travail, partagez vos avis
+                <p class="text-center texte-accueil" style="color:#fff;">Rester en contact avec vos collègues de travail, partagez vos avis
                     et discuter en toute simplicité autout d'un bon café.</p>
                     <?php if(isset($_SESSION['succes'])){ ?>
                 <div class="alert alert-success text-center">
@@ -24,11 +24,14 @@
     <div class="container-xl">
         <div class="row">
             <div class="col-sm-6">
+
                 <img src="public/images/phone.png" class="rounded mx-auto d-block logo-accueil image-presentation"
-                    alt="kikbook-logo" >
+                    alt="kikbook-logo" style="width:350px;" >
             </div>
             <div class="col-sm-4">
-                <h1 class="text-center nom-accueil effet-degrade"> KIKBOOK </h1>
+                <!-- <h1 class="text-center nom-accueil effet-degrade"> KIKBOOK </h1> -->
+                <img src="public/images/kikbook-logo.png" class="rounded mx-auto d-block logo-accueil image-presentation"
+                    alt="kikbook-logo" style="width:120px;" >
                 <?php if(isset($_SESSION['erreur'])){ ?>
                 <div class="alert alert-warning">
                     <?= $_SESSION['erreur'] ?>

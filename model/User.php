@@ -24,12 +24,11 @@ class User {
     }
 
     // Connexion au site
-    public static function connexion(string $email, string $password){
+    public static function connexion(string $email){
     $dbh = databaseConnexion::open();
-    $query = "SELECT * FROM `user` WHERE `email` = :email AND `password` = :password ";
+    $query = "SELECT * FROM `user` WHERE `email` = :email";
     $sth = $dbh->prepare($query);
     $sth->bindParam(":email", $email);
-    $sth->bindParam(":password", $password);
     $sth->execute();
     $sth->setFetchMode(PDO::FETCH_CLASS,"Kikbook\\model\\User");
     $items = $sth->fetch();
@@ -66,7 +65,7 @@ class User {
     // Chercher tout les utilisateur de la table user, aléatoire , limite de 5
     public static function getAllUser(){
     $dbh = databaseConnexion::open();
-    $query = "SELECT * FROM `user` ORDER BY rand() LIMIT 5;";
+    $query = "SELECT * FROM `user` ORDER BY rand() LIMIT 20;";
     $sth = $dbh->prepare($query);
     $sth -> execute();
     $sth->setFetchMode(PDO::FETCH_CLASS,"Kikbook\\model\\User");
@@ -74,6 +73,8 @@ class User {
     databaseConnexion::close();
     return $items;
     }
+
+    // SELECT * FROM `user` WHERE NOT EXISTS (SELECT id_repondant FROM friend WHERE id_user=id_demandeur)
 
     // Voir le profil de l'utilisateur sélectionner dans la liste d'amis
     public static function getUserProfil($id_user){
@@ -88,5 +89,6 @@ class User {
     databaseConnexion::close();
     return $items;
     }
+
 
 }

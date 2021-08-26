@@ -135,13 +135,15 @@ class Profil {
     }
 
     // Accepter des demandes d'amis
-    public static function acceptFriends($id_repondant){
+    public static function acceptFriends($id_repondant, $id_relation){
     $dbh = databaseConnexion::open();
-    $query = "UPDATE `friend` SET`acceptation`= 1 WHERE `id_repondant` = :id_repondant ";
+    $query = "UPDATE `friend` SET`acceptation`= 1 WHERE `id_repondant` = :id_repondant AND `id_relation` = :id_relation ";
     $sth = $dbh->prepare($query);
     $sth->bindParam(":id_repondant", $id_repondant);
+    $sth->bindParam(":id_relation",$id_relation);
     $sth->execute(array(
-        'id_repondant' => $id_repondant));
+        'id_repondant' => $id_repondant,
+        'id_relation' => $id_relation));
     $sth->setFetchMode(PDO::FETCH_CLASS,"Kikbook\\model\\Profil");
     $items = $sth->fetchAll();
     databaseConnexion::close();
@@ -234,6 +236,20 @@ class Profil {
     $sth->bindParam(":id_commentaire",$id_commentaire);
     $sth -> execute();
     databaseConnexion::close();  
+    }
+
+    // Savoir le nombre de demandes d'amis
+    public static function numberFriend($id_repondant){
+    $dbh = databaseConnexion::open();
+    $query = "SELECT COUNT(id_repondant) FROM `friend` WHERE `id_repondant` = :id_repondant  AND `acceptation` = 0";
+    $sth = $dbh->prepare($query);
+    $sth->bindParam(":id_repondant", $id_repondant);
+    $sth -> execute(array(
+        'id_repondant' => $id_repondant));
+    $sth->setFetchMode(PDO::FETCH_CLASS,"Kikbook\\model\\Profil");
+    $items = $sth->fetch();
+    databaseConnexion::close();
+    return $items; 
     }
     
     }

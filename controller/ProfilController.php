@@ -21,7 +21,8 @@ class ProfilController
         $router->addRoute(new Route("/updatePublish/{id}", "ProfilController", "updatePublish"));
         $router->addRoute(new Route("/insertCommentaire/{id}", "ProfilController", "insertCommentaire"));
         $router->addRoute(new Route("/insertCommentaireProfil/{id}", "ProfilController", "insertCommentaireProfil"));
-        $router->addRoute(new Route("/deleteCommentaire/{id}", "ProfilController", "deleteCommentaire"));        
+        $router->addRoute(new Route("/deleteCommentaire/{id}", "ProfilController", "deleteCommentaire"));     
+        
 
         $route = $router->findRoute();
         if ($route)
@@ -53,20 +54,21 @@ class ProfilController
     // Fonction chercher les publication de l'utilisateur
     public static function profil(){
     $id_user =  $_SESSION['user']->id_user;
+    $id_repondant = $_SESSION['user']->id_user;
     $publications = Profil::getAllPublish($id_user);
-    $users = User::getAllUser(); 
     $infos = Profil::getFriendInfosRepondant();
     $informations = Profil::getFriendInfosDemandeur();
     $commentaires = Profil::getAllCommentaire();
     $friends = Profil::listeFriend();
+    $numbers = Profil::numberFriend($id_repondant);
 
     View::setTemplate('profil');
-    View::bindVariable("users", $users);
     View::bindVariable("publications", $publications);
     View::bindVariable("infos", $infos);
     View::bindVariable("informations", $informations);
     View::bindVariable("commentaires", $commentaires);
     View::bindVariable("friends", $friends);
+    View::bindVariable("numbers", $numbers);
     View::display();
     }
 
@@ -92,9 +94,10 @@ class ProfilController
     header("Location: ".$_SERVER['HTTP_REFERER']."");
     }
 
-    public static function acceptFriends(){
+    public static function acceptFriends($id){
     $id_repondant = $_SESSION['user']->id_user;
-    Profil::acceptFriends($id_repondant);
+    $id_relation = $id;
+    Profil::acceptFriends($id_repondant, $id_relation);
     View::bindVariable("id_repondant", $id_repondant);
     $_SESSION['succes'] = "Invitation accepté !";
     header("Location: ".$_SERVER['HTTP_REFERER']."");

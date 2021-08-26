@@ -26,9 +26,9 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 justify-content-center">
-                    <li class="nav-item nav-mobile">
+                    <!-- <li class="nav-item nav-mobile">
                         <a class="nav-link" href="<?= $path ?>/news">Accueil</a>
-                    </li>
+                    </li> -->
                     <li class="nav-item nav-mobile">
                         <a class="nav-link" href="<?= $path ?>/profil">Mon profil</a>
                     </li>
@@ -40,12 +40,12 @@
                     </li>
                 </ul>
                 <ul class="ml-auto navbar-nav nav-ordinateur" style="margin-right:30px;">
-                    <li>
+                    <!-- <li>
                         <a href="<?= $path ?>/news" style="margin-right:20px;">
                             <img src="../public/images/house-fill.png" width="30" height="30"
                                 class="d-inline-block align-top" alt="kikbook-logo">
                         </a>
-                    </li>
+                    </li> -->
                     <li>
                         <a href="<?= $path ?>/profil" style="margin-right:20px;">
                             <img src="../public/images/person-square.png" width="30" height="30"
@@ -113,25 +113,27 @@
             <!--------------->
             <div class="col-md-7">
                 <div class="jumbotron">
-                    <?php foreach ($users as $user): ?>
                     <h1 class="display-4 effet-degrade text-center" style="font-size:25px;">Publications de
                         <?= $user->prenom ?> <?= $user->nom ?> </h1>
-                    <?php endforeach; ?>
-                    <?php foreach ($elements as $element): ?>
-                    <?php if ($id_user == $element->id_user_publication) {
-                        echo "     
-                    <div class='alert alert-primary' role='alert'>
-                        <div class='row'>
-                            <div class='col-lg-12 col-md-12 col-sm-12'>
-                                 <p>" .$element->nom ." " .$element->prenom ."</p>
-                                 <p>Le " .$element->date_publication ."</p>
-                                 <p>" .$element->contenu ."</p>"; ?>
+                    <?php foreach ($users as $user): ?>
+                    <?php foreach ($friends as $friend): ?>
+                    <?php
+                        if($user->id_user === $friend->id_demandeur AND $_SESSION['user']->id_user === $friend->id_repondant AND $friend->acceptation == 1 OR $user->id_user === $friend->id_repondant AND $_SESSION['user']->id_user === $friend->id_demandeur AND $friend->acceptation == 1){
+                        
+                        foreach ($elements as $element){
+                            if ($id_user == $element->id_user_publication){
+                                echo "     
+                                <div class='alert alert-primary' role='alert'>
+                                <div class='row'>
+                                <div class='col-lg-12 col-md-12 col-sm-12'>
+                                <p>" .$element->nom ." " .$element->prenom ."</p>
+                                <p>Le " .$element->date_publication ."</p>
+                                <p>" .$element->contenu ."</p>";
 
-
-                    <?php foreach ($commentaires as $commentaire): ?>
-                    <?php if ($commentaire->id_publication == $element->id_publication) {
-                            if ($_SESSION["user"]->id_user == $commentaire->id_user) {
-                                echo "<div class='alert alert-warning' role='alert'>
+                                foreach ($commentaires as $commentaire){
+                                    if ($commentaire->id_publication == $element->id_publication){
+                                        if ($_SESSION["user"]->id_user == $commentaire->id_user){
+                                            echo "<div class='alert alert-warning' role='alert'>
                                 <div class='row'>
                                 <div class='col-lg-10 col-md-10 col-sm-10'>
                               $commentaire->nom $commentaire->prenom :
@@ -164,50 +166,52 @@
                              </div>
                           </div>
                                 </div>
-                                   </div>";
-                            } else {
-                                echo "<div class='alert alert-danger' role='alert'>
-                            $commentaire->nom $commentaire->prenom :
-                            $commentaire->contenu
-                           </div>";
+                                   </div>"; 
+                                        }
+                                        else {
+                                            echo "<div class='alert alert-danger' role='alert'>
+                                        $commentaire->nom $commentaire->prenom :
+                                        $commentaire->contenu
+                                       </div>";
+                                        }
+                                    }
+                                }
                             }
-                        }  ?>
-                    <?php endforeach; ?>
-
-                    
-                    <form action="<?= $path ?>/insertCommentaireProfil/<?= $element->id_publication ?>" method="POST"
-                        class="">
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-md-10">
-                                    <input class="form-control" id="commentaire" name="commentaire"
-                                        placeholder="Laisser un commentaire " maxlength="255">
-                                </div>
-                                <div class="col-md-2">
-                                    <div class="text-center">
-                                        <button type="submit" class="btn btn-warning"></button>
+                            echo "<form action='$path/insertCommentaireProfil/$element->id_publication' method='POST'
+                            class=''>
+                            <div class='form-group'>
+                                <div class='row'>
+                                    <div class='col-md-10'>
+                                        <input class='form-control' id='commentaire' name='commentaire'
+                                            placeholder='Laisser un commentaire' maxlength='255'>
+                                    </div>
+                                    <div class='col-md-2'>
+                                        <div class='text-center'>
+                                            <button type='submit' class='btn btn-warning'></button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </form>
+                        </form>";
+                            }
+                        } else {
+                            echo "<div class='alert alert-danger text-center' role='alert'> Vous n'êtes pas encore ami, pour voir les publications de cette utilisateur merci de lui envoyer une reqûete.</div>";
+                        }
+
+
+                        ?>
+
+                    <?php endforeach; ?>
+                    <?php endforeach; ?>
+
                 </div>
             </div>
+            <!--------------->
+            <!-- COLONNE 3 -->
+            <!--------------->
+            <div class="col-md-2">
+            </div>
         </div>
-        <?php   } else{
-            echo "<div class='alert alert-danger' role='alert'>
-            <p>GLA</p>
-           </div>";
-        }  ?>
-        <?php endforeach; ?>
-    </div>
-    </div>
-    <!--------------->
-    <!-- COLONNE 3 -->
-    <!--------------->
-    <div class="col-md-2">
-    </div>
-    </div>
     </div>
     <?php require "footer.html"; ?>
 </body>

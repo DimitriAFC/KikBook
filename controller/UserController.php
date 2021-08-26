@@ -21,9 +21,10 @@ class UserController
         $router->addRoute(new Route("/account", "UserController", "account"));
         $router->addRoute(new Route("/updateProfil", "UserController", "updateProfil"));
         $router->addRoute(new Route("/updatePassword", "UserController", "updatePassword"));
-        $router->addRoute(new Route("/getAllUsers", "UserController", "getAllUsers"));
+        $router->addRoute(new Route("/getAllUser", "UserController", "getAllUser"));
         $router->addRoute(new Route("/seeuser/{id}", "UserController", "seeuser"));
         $router->addRoute(new Route("/requestfriends", "UserController", "requestfriends"));
+        $router->addRoute(new Route("/userlist", "UserController", "userlist"));
 
 
 
@@ -38,10 +39,17 @@ class UserController
         }
     }
 
-    public static function register(){
-    View::setTemplate('register');
+    public static function userlist(){
+    $users = User::getAllUser(); 
+    View::bindVariable("users", $users);
+    View::setTemplate('userlist');
     View::display();
     }
+
+    public static function register(){
+        View::setTemplate('register');
+        View::display();
+        }
 
     // Fonction inscription de l'utilisateur
     public static function inscription()
@@ -80,15 +88,16 @@ class UserController
                                 $user->nom = $_POST['nom'];
                                 $user->prenom = $_POST['prenom'];
                                 $user->email = $_POST['email'];
-                                $user->password = $_POST['password'];
+                                $hash = $_POST['password'];
+                                $user->password = password_hash($hash,PASSWORD_DEFAULT);
                                 $user->date_naissance = $_POST['date_naissance'];
                                 $user->genre = $_POST['genre'];
                                 $user->register();
 
-                                $loginUser = new User;
-                                $_SESSION['user'] = $loginUser->connexion($user->email, $user->password);
+                                // $loginUser = new User;
+                                // $_SESSION['user'] = $loginUser->connexion($user->email, $user->password);
 
-                                $_SESSION['succes'] = "BIENVENUE SUR KIIKBOOK !";
+                                $_SESSION['succes'] = "Inscription prise en compte45 !";
                                 $router = new Router();
                                 $path = $router->getBasePath();
                                 header("location:{$path}/");
@@ -114,13 +123,14 @@ class UserController
             }
             else {
 
+
                 $email = $_POST['email'];
                 $password = $_POST['password'];
                 $users = new User;
+                $user = $users->connexion($email);
+                $hash = $user->password;
 
-                $user = $users->connexion($email, $password);
-
-                if($user != null){
+                if($user != null && password_verify($password, $hash)){
                     $_SESSION['user'] = $user;
                     $router = new Router();
                     $path = $router->getBasePath();
@@ -131,7 +141,7 @@ class UserController
                     unset($_SESSION['user']);
                     $router = new Router();
                     $path = $router->getBasePath();
-                    header("location:{$path}/");
+                    header("location:profil.html.php");
                 }
             }
         }
@@ -177,9 +187,10 @@ class UserController
     if($_POST['password'] === $_POST['newPassword'])
         {
         $user = new User;
+        $hash = $_POST['password'];
         $user->id_user = $_SESSION['user']->id_user;
         $user->email = $_SESSION['user']->email;
-        $user->password = $_POST['password'];
+        $user->password = password_hash($hash,PASSWORD_DEFAULT);
         $user->updatePassword();
         $loginUser = new User;
 
@@ -198,10 +209,12 @@ class UserController
     $id_user = $id;
     $elements = Profil::getAllInfosUsers($id_user);
     $commentaires = Profil::getAllCommentaire();
+    $friends = Profil::listeFriend();
     View::bindVariable("users", $users);
     View::bindVariable("id_user", $id_user);
     View::bindVariable("elements", $elements);
     View::bindVariable("commentaires", $commentaires);
+    View::bindVariable("friends", $friends);
     View::setTemplate('seeuser');
     View::display();
     }

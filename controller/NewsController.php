@@ -4,12 +4,14 @@ namespace Kikbook\controller;
 use Kikbook\Route;
 use Kikbook\Router;
 use Kikbook\View;
+use Kikbook\model\News;
 
-class HomeController{
+class NewsController{
 
     public static function route(){
         $router = new Router();
-        $router->addRoute(new Route("/", "HomeController", "home"));
+        $router->addRoute(new Route("/news", "NewsController", "news"));
+        $router->addRoute(new Route("/getAllNews", "NewsController", "getAllNews"));
 
         $route = $router->findRoute();
 
@@ -37,10 +39,11 @@ class HomeController{
         }
     }
 
-    public static function home(){
-    View::setTemplate('home');
+    public static function news(){
+    $news = News::getAllNews(); 
+    View::setTemplate('news');
+    View::bindVariable("news", $news);
     View::display();
     }
-
 }
 

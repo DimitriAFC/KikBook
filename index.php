@@ -10,7 +10,8 @@ session_start();
 $router = new Router();
 // HOME CONTROLLER
 $router->addRoute(new Route("/","HomeController"));
-$router->addRoute(new Route("/news", "HomeController"));
+// NEWS CONTROLLER
+$router->addRoute(new Route("/news", "NewsController"));
 // USER CONTROLLER
 $router->addRoute(new Route("/register", "UserController", "register"));
 $router->addRoute(new Route("/inscription", "UserController", "inscription"));
@@ -22,6 +23,7 @@ $router->addRoute(new Route("/updateProfil", "UserController", "updateProfil"));
 $router->addRoute(new Route("/updatePassword", "UserController", "updatePassword"));
 $router->addRoute(new Route("/seeuser/{*}", "UserController", "seeuser"));
 $router->addRoute(new Route("/requestfriends", "UserController", "requestfriends"));
+$router->addRoute(new Route("/userlist", "UserController", "userlist"));
 // $router->addRoute(new Route("/addFriends/{*}", "UserController", "addFriends"));
 // PROFIL CONTROLLER
 $router->addRoute(new Route("/profil", "ProfilController", "profil"));
@@ -35,7 +37,7 @@ $router->addRoute(new Route("/updatePublish/{*}", "ProfilController", "updatePub
 $router->addRoute(new Route("/insertCommentaire/{*}", "ProfilController", "insertCommentaire"));
 $router->addRoute(new Route("/insertCommentaireProfil/{id}", "ProfilController", "insertCommentaireProfil"));
 $router->addRoute(new Route("/deleteCommentaire/{id}", "ProfilController", "deleteCommentaire"));
-
+   
 
 
 

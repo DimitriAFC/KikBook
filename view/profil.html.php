@@ -39,9 +39,13 @@
                <button type="button" class="list-group-item list-group-item-action"><a href="<?= $path ?>/friends">Ma
                      liste
                      d'amis</a></button>
+                     <?php foreach($numbers as $number):?>
                <button type="button" class="list-group-item list-group-item-action"><a
                      href="<?= $path ?>/requestfriends">Mes demandes d'amis
-                     d'amis</a></button>
+                     d'amis (<?= $number ?>)</a></button>
+                     <?php endforeach;?>
+                     <button type="button" class="list-group-item list-group-item-action"><a href="<?= $path ?>/userlist">Rechercher des amis
+                     </a></button>
             </div>
          </div>
          <!--------------->
@@ -120,7 +124,7 @@
 
                         <?php endforeach;?>
 
-                     </div>   
+                     </div>
 
 
                      <div class="col-lg-2 col-md-2 col-sm-2">
@@ -167,10 +171,12 @@
                            </div>
                         </div>
 
-                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#supprimer<?= $publication->id_publication ?>">
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                           data-bs-target="#supprimer<?= $publication->id_publication ?>">
                         </button>
                         <!-- Modal -->
-                        <div class="modal fade" id="supprimer<?= $publication->id_publication ?>" tabindex="-1" aria-labelledby="Titre" aria-hidden="true">
+                        <div class="modal fade" id="supprimer<?= $publication->id_publication ?>" tabindex="-1"
+                           aria-labelledby="Titre" aria-hidden="true">
                            <div class="modal-dialog">
                               <div class="modal-content">
                                  <div class="modal-header">
@@ -252,18 +258,18 @@
                             }
                             else{
                             } ?>
-                 
+
                   <?php endforeach;?>
-                  <?php foreach($informations as $info):?>
+                  <?php foreach($informations as $information):?>
                   <?php if($info->acceptation == 1){
-                        if($_SESSION['user']->id_user == $info->id_repondant){
+                        if($_SESSION['user']->id_user == $information->id_repondant){
                             echo" <div class='alert alert-primary' role='alert'>
                             <div class='row'>
                             <div class='col-lg-10 col-md-8 col-sm-6'>
-                            <p>" .$info->nom. ' ' .$info->prenom."</p> 
+                            <p>" .$information->nom. ' ' .$information->prenom."</p> 
                             </div>
                             <div class='col-lg-2 col-md-4 col-sm-6'>
-                            <a href='$path/seeuser/$info->id_user'><img src='public/images/person-square.png' 'width='30' height='30'
+                            <a href='$path/seeuser/$information->id_user'><img src='public/images/person-square.png' 'width='30' height='30'
                             class='d-inline-block align-top' alt='kikbook-logo'></a>
                             </div>
                             </div>
@@ -278,41 +284,7 @@
                   </div>
                </div>
             </div>
-            <div class="jumbotron jumbotron-fluid">
-               <div class="container">
-                  <h6 class="display-4 effet-degrade text-center">Rechercher des amis</h6>
-                  <?php foreach($users as $user):?>
-                     <?php if($user->id_user !== $_SESSION['user']->id_user)
-                     {
-                        $verification = "Non";
-                        foreach($infos as $info)
-                        {
-                           if($user->id_user !== $info->id_user)
-                           {
-                           
-                           } else 
-                           {
-                              $verification ="Oui";
-                           }
-                        }
-                     } else {
-                        $verification = "Oui";
-                     }
-                     if($verification === "Non"){
-                        echo"<div class='col text-center'>
-                        <div class='alert alert-primary' role='alert'>
-                        <div class='row'>
-                        <div class='col-md-6'>" .$user->nom. ' ' .$user->prenom. "</div>
-                        <div class='col-md-6'> <a class='btn btn-success' href='$path/addFriends/$user->id_user'>Ajouter</a></div>
-                        </div>
-                        </div>
-                        </div>";
-                     }
-
-                                 ?>
-                     <?php endforeach;?>
-               </div>
-            </div>
+ 
          </div>
       </div>
    </div>
